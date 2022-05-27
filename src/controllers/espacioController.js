@@ -6,12 +6,12 @@ import { Authenticate } from '../common/jwt.strategy.js';
 const router = Router();
 const espacioService = new EspacioService();
 
-router.get('/', Authenticate, async (res) => {
+router.get('/', Authenticate, async (req, res) => {
       console.log(`This is a get operation`);
     
       const espacios = await espacioService.getEspacios();
     
-      return res.status(200).json(espacios);
+      return res.status(201).json(espacios);
     });
   
 
