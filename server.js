@@ -3,6 +3,7 @@ import cors from "cors";
 import passport from 'passport';
 import { jwtStrategy } from './src/common/jwt.strategy.js';
 import EspacioRouter from "./src/controllers/espacioController.js";
+import EdificioRouter from "./src/controllers/edificioController.js";
 import AuthRouter from "./src/controllers/authController.js"
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(passport.initialize());
 
 app.use("/espacios", EspacioRouter);
 app.use("/auth", AuthRouter);
+app.use("/edificios", EdificioRouter)
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
