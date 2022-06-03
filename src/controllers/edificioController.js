@@ -10,7 +10,7 @@ router.post('', Authenticate, async (req, res) => {
     console.log(`This is a post operation`);
   
     const edificio = await edificioService.createEdificio(req.body);
-  
+    
     return res.status(201).json(edificio);
     });
 
@@ -21,6 +21,7 @@ router.post('', Authenticate, async (req, res) => {
       
         return res.status(201).json(edificio);
       });
+
   
 
 export default router;
