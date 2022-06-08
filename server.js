@@ -21,6 +21,6 @@ app.use("/edificios", EdificioRouter)
 app.use("/departamentos", DepartamentoRouter)
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  console.log(`Listening on port 5000`);
 });
 
