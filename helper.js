@@ -20,6 +20,8 @@ const dbHelper = async (id, params, query) => {
     .input('Dni',sql.Int, params?.Dni ?? '')
     .input('Telefono',sql.Int, params?.Telefono ?? '')
     .input('Departamento',sql.VarChar, params?.Departamento ?? '')
+    .input('Mail',sql.VarChar, params?.Mail ?? '')
+    .input('Contraseña',sql.VarChar, params?.Contraseña ?? '')
     .query(query);
     return response;
 };

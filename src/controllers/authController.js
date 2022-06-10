@@ -4,6 +4,7 @@ import { AuthService } from '../services/authService.js';
 const router = Router();
 const authService = new AuthService();
 
+
 router.get('/logIn', async (req, res) => {
     console.log(`This is a get operation`);
 
