@@ -8,7 +8,6 @@ import DepartamentoRouter from "./src/controllers/departamentoController.js";
 import AuthRouter from "./src/controllers/authController.js"
 
 const app = express();
-const port = 8080;
 
 app.use(cors());
 app.use(express.json());
@@ -20,7 +19,6 @@ app.use("/auth", AuthRouter);
 app.use("/edificios", EdificioRouter)
 app.use("/departamentos", DepartamentoRouter)
 
-app.listen(port, () => {
-  console.log(`Listening on port 5000`);
-});
+
+app.listen(process.env.PORT || 5000)
 
