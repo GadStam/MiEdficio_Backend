@@ -6,40 +6,47 @@ import EspacioRouter from "./src/controllers/espacioController.js";
 import EdificioRouter from "./src/controllers/edificioController.js";
 import DepartamentoRouter from "./src/controllers/departamentoController.js";
 import AuthRouter from "./src/controllers/authController.js"
-
-//import AdminRouter from "./src/controllers/adminController.js"
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 
 const app = express();
-//const path = require("path")
-//const swaggerUI = require("swagger-ui-express");
-//const swaggerJsDoc = require("swagger-jsdoc");
-//const swaggerSpec = {
-  //definition: {
-    //openapi: "3.0.0",
-    //info:{
-      //tittle: "api miedificio",
-      //version: "1.0.0"
-    //},
-    //servers: [
-     // {
-      //url: "http://localhost:5000"
-      //}
-    //]
-  //},
-  //apis:['${path.join(__dirname,"./controllers/*.js)}'],
-//}
 
 app.use(cors());
 app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
-//app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
 app.use("/espacios", EspacioRouter);
 app.use("/auth", AuthRouter);
 app.use("/edificios", EdificioRouter)
 app.use("/departamentos", DepartamentoRouter)
-//app.use("/admins", AdminRouter)
 
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Library API",
+      version: "1.0.0",
+      description: "A simple Express Library API",
+      termsOfService: "http://example.com/terms/",
+      contact: {
+        name: "API Support",
+        url: "http://www.exmaple.com/support",
+        email: "support@example.com",
+      },
+    },
+
+    servers: [
+      {
+        url: "http://localhost:5000",
+        description: "My API Documentation",
+      },
+    ],
+  },
+  apis: ["./src/controllers/*.js"],
+};
+
+const specs = swaggerJsDoc(options);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.listen(process.env.PORT || 5000)
 
