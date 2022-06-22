@@ -6,11 +6,34 @@ import { Authenticate } from '../common/jwt.strategy.js';
 const router = Router();
 const departamentoService = new DepartamentoService();
 
-    /**
+/**
  * @swagger
  *  tags:
  *    name: Departamento
- *    description: Departamento
+ *    description: Endpoint departamento
+ */
+
+/**
+ * @swagger
+ * /departamentos:
+ *   post:
+ *     summary: Create a new departamento
+ *     tags: [Departamento]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       200:
+ *         description: The departamento was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       500:
+ *         description: Some server error
  */
 
 router.post('', Authenticate, async (req, res) => {
@@ -22,20 +45,26 @@ router.post('', Authenticate, async (req, res) => {
     });
 
 
-    /**
+
+
+/**
  * @swagger
  * /departamentos/{codigo}:
  *   get:
- *     summary: Returns departamentos by codigo
+ *     summary: gets departamento by codigo
  *     tags: [Departamento]
+ *     parameters:
+ *       - in : path
+ *         name: codigo
+ *         description: codigo of departamento
+ *         schema:
+ *           type: integer
+ *         required: true
  *     responses:
  *       200:
- *         description: the list of the departamentos
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
+ *         description: Departamento by its codigo
+ *       400:
+ *         description: Departamento can not be found
  */
 router.get('/',Authenticate, async (req,res) => {
     let Codigo = req.query.Codigo;
