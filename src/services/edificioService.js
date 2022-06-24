@@ -43,59 +43,18 @@ export class EdificioService {
         let Id_Administrador=0
 
         if(Mail && Contraseña){
-            
             Id_Administrador=await dbHelper (undefined,{Mail, Contraseña},query2)
-            console.log(Id_Administrador)
-            query=`SELECT * from ${edificioTabla} WHERE Id_Administrador=@Id_Administrador`
-        }
-        response=await dbHelper (undefined,{Id_Administrador:Id_Administrador.recordset[0].Id_Administrador},query)
-        console.log(response)
-        return response.recordset;
-    }
-
-    getPersonaje = async (nombre,edad,id_movie,peso) => {
-        console.log('This is a function on the service');
-        let where=false
-        let response;
-
-        let query=`SELECT distinct Nombre, Imagen, Id from ${personajeTabla} c `;
-        let query1=''
-
-        if(nombre){
-            where=true;
-            query1+=`Nombre=@Nombre`;   
-
-        }if(edad){
-            if(where){
-                query1+=` and Edad=@Edad`;
+            console.log(Id_Administrador.recordset)
+            if(Id_Administrador.recordset!=0){
+                query=`SELECT * from ${edificioTabla} WHERE Id_Administrador=@Id_Administrador`
+                response=await dbHelper (undefined,{Id_Administrador:Id_Administrador.recordset[0].Id_Administrador},query)
             }else{
-                where=true
-                query1+=` Edad=@Edad `
+                response=0
             }
-
-        }if(peso){
-            if(where){
-            query1+=` and Peso=@Peso `;
-            }else{
-            where=true
-            query1+=` Peso=@Peso ` 
-            }
-        }if(id_movie && (nombre || edad || peso)){
-            query1= `, ${peliculaXpersonajeTabla} pp where c.Id=pp.Id_personaje and `+query1
-            query1+=` and pp.Id_pelicula=@Id_movie`
-        }else if(id_movie){
-            query1= `, ${peliculaXpersonajeTabla} pp where c.Id=pp.Id_personaje and pp.Id_pelicula=@Id_movie`
-        }
-
-        if(where && !id_movie){
-            query+="WHERE " + query1
         }else{
-            query+=query1
+            response=0
         }
-
-        console.log(query)
-        response=await dbHelper(undefined, {nombre,edad,id_movie,peso}, query)
-
+        console.log(response.recordset)
         return response.recordset;
     }
 }

@@ -44,6 +44,45 @@ router.post('', Authenticate, async (req, res) => {
     return res.status(201).json(departamento);
     });
 
+    /**
+ * @swagger
+ * /departamentos/{codigo}:
+ *   put:
+ *     summary: updates departamento by codigo
+ *     tags: [Departamento]
+ *     parameters:
+ *       - in: path
+ *         name: codigo
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: departamento codigo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       200:
+ *         decsription: The departamento was updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       404:
+ *         description: departamento was not found.
+ *       500:
+ *         description: Some errors happend.
+ *
+ */
+router.put('/:codigo', Authenticate, async (req, res) => {
+    console.log(`this is a put operation`)
+
+    const departamento = await departamentoService.updateDepartamentoByCodigo(req.params.codigo, req.body)
+
+    return res.status(200).json(departamento);
+})
 
 
 
@@ -66,10 +105,10 @@ router.post('', Authenticate, async (req, res) => {
  *       400:
  *         description: Departamento can not be found
  */
-router.get('/',Authenticate, async (req,res) => {
+router.get('/:codigo',Authenticate, async (req,res) => {
     let Codigo = req.query.Codigo;
 
-    const departamento = await departamentoService.getDepartamentoByCodigo(Codigo)
+    const departamento = await departamentoService.getDepartamentoByCodigo(req.params.codigo)
 
     return res.status(201).json(departamento);
 })
