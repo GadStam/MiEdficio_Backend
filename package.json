@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "node server.js"
   },
@@ -23,6 +24,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mssql": "^8.1.1",
+    "nodemon": "^2.0.18",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "swagger-jsdoc": "^6.2.1",

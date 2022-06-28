@@ -9,44 +9,56 @@ export class DepartamentoService {
     createDepartamento = async (departamento) => {
         console.log('This is a function on the service');
         let response
+        let codigos
         let query
         let k=0;
-        let letras = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","u","v","w","x","y","z", 0,1,2,3,4,5,6,7,8,9]
+        let letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z", "0","1","2","3","4","5","6","7","8","9"]
+        let query2 = `SELECT Codigo FROM ${DB_TABLA_DEPARTAMENTO}`
         const {automatico, letra, correlativa, cant_pisos, departamentosXpiso}=departamento
-        let codigo
         for(let i=0; i<cant_pisos; i++){
             if(automatico==="true"){
-                for(let j=0; j<departamentosXpiso; j++){
-                    codigo=Math.floor(Math.random() * (37 - 1)) + 1;
-                    console.log(letras[codigo])
+                for(let j=0;  j<departamentosXpiso; j++){
+                    let codigo
+                    codigo=generateCode()
+                    codigos=await dbHelper(undefined,departamento,query2)
+                    codigos.forEach(cod => {
+                        if (codigo === cod) {
+                            codigo=generateCode()
+                        }
+                    })
                     if(letra==="true"){
-                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES (@Codigo, '${i+1}${letras[j]}', @Id_Edificio) `
+                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', @Id_Edificio) `
                         response=await dbHelper (undefined,departamento,query)
                     }else if(correlativa==="false"){
-                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES (@Codigo, '${i+1}.${j+1}', @Id_Edificio) `;
+                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES ('${codigo}', '${i+1}.${j+1}', @Id_Edificio) `;
                         response=await dbHelper (undefined,departamento,query)
                     }else{
                         k++;
-                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES (@Codigo, '${i+1}.${k}', @Id_Edificio) `;
+                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES ('${codigo}', '${i+1}.${k}', @Id_Edificio) `;
                         response=await dbHelper (undefined,departamento,query)
                     }
                 }
             }else{
                 for(let j=0; j<departamentosXpiso[i]; j++){
-                    codigo=Math.floor(Math.random() * (37 - 1)) + 1;
-                    console.log(letras[codigo])
-                    //console.log(departamentosXpiso[i])
-                    if(letra==="true"){
-                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES (@Codigo, '${i+1}${letras[j]}', @Id_Edificio) `
-                        response=await dbHelper (undefined,departamento,query)
-                    }else if(correlativa==="false"){
-                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES (@Codigo, '${i+1}.${j+1}', @Id_Edificio) `;
-                        response=await dbHelper (undefined,departamento,query)
-                    }else{
-                        k++;
-                        query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES (@Codigo, '${i+1}.${k}', @Id_Edificio) `;
-                        response=await dbHelper (undefined,departamento,query)
-                    }
+                    let codigo
+                    codigo=generateCode()
+                    codigos=await dbHelper(undefined,departamento,query2)
+                    codigos.forEach(cod => {
+                        if (codigo === cod) {
+                            codigo=generateCode()
+                        }
+                    })
+                }
+                if(letra==="true"){
+                    query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', @Id_Edificio) `
+                    response=await dbHelper (undefined,departamento,query)
+                }else if(correlativa==="false"){
+                    query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES ('${codigo}', '${i+1}.${j+1}', @Id_Edificio) `;
+                    response=await dbHelper (undefined,departamento,query)
+                }else{
+                    k++;
+                    query=`INSERT INTO ${departamentoTabla} (Codigo, Departamento, Id_Edificio) VALUES ('${codigo}', '${i+1}.${k}', @Id_Edificio) `;
+                    response=await dbHelper (undefined,departamento,query)
                 }
             }
         }
@@ -70,5 +82,15 @@ export class DepartamentoService {
         console.log(departamento.codigo)
 
         return response.recordset;
+    }
+
+    generateCode = async() => {
+        let codigo= ''
+        for(let m=0; m<1;m++){
+            let char=Math.floor(Math.random() * (36 - 0)) + 0;
+            codigo=codigo + letras[char]
+        }
+
+        return codigo
     }
 }
