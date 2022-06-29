@@ -62,13 +62,10 @@ router.post('', Authenticate, async (req, res) => {
  *       400:
  *         description: Edificio can not be found
  */
-    router.get('/', Authenticate, async (req, res) => {
+    router.post('/edificios', Authenticate, async (req, res) => {
         console.log(`This is a get operation`);
 
-        let mail = req.query.mail
-        let contraseña = req.query.contraseña
-
-        const edificio = await edificioService.getEdificio(mail,contraseña);
+        const edificio = await edificioService.getEdificio(req.body);
       
         return res.status(201).json(edificio);
       });

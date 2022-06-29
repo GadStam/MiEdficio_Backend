@@ -44,4 +44,16 @@ router.post('', Authenticate, async (req, res) => {
     
     return res.status(201).json(administrador);
     });
+
+
+router.post('/logIn', Authenticate, async (req, res) => {
+    console.log(`This is a get operation`);
+
+
+        const administrador = await administradorService.getAdministrador(req.body);
+      
+        return res.status(201).json(administrador);
+      });
+
+
 export default router;

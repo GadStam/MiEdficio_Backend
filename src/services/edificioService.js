@@ -35,8 +35,11 @@ export class EdificioService {
         return response.recordset;
     }
 
-    getEdificio = async (Mail,Contraseña) => {
+    getEdificio = async (administrador) => {
         console.log('This is a function on the service');
+
+        const{Mail, Contraseña}= administrador
+
         let response
         let query=`SELECT * from ${edificioTabla}`;
         let query2=`SELECT Id_Administrador from ${adminTabla} WHERE Mail=@Mail and Contraseña=@Contraseña`
