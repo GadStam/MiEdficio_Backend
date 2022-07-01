@@ -8,7 +8,7 @@ export class AdministradorService {
     createAdministrador = async (administrador) => {
         console.log('This is a function on the service');
         let response
-        let query=`INSERT INTO ${adminTabla} (Nombre, Apellido, Mail, Contraseña) VALUES (@Nombre, @Apellido,  @Mail, @Contraseña) `;
+        let query=`INSERT INTO ${adminTabla} (Nombre, Apellido, Mail, Contraseña, Telefono) VALUES (@Nombre, @Apellido,  @Mail, @Contraseña, @Telefono) `;
         response=await dbHelper (undefined,administrador,query)
         console.log(response)
         return response.recordset;

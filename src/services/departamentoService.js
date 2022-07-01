@@ -6,7 +6,7 @@ const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO;
 
 export class DepartamentoService {
 
-    /*generateCode=() => {
+    /*zgenerateCode=() => {
         let codigo= ''
         for(let m=0; m<1;m++){
             let char=Math.floor(Math.random() * (36 - 0)) + 0;
