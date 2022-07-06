@@ -51,5 +51,5 @@ const options = {
 const specs = swaggerJsDoc(options);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 4000)
 
