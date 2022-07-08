@@ -41,8 +41,7 @@ const administradorService = new AdministradorService();
 
 router.post('', /*Authenticate,*/ async (req, res) => {
     console.log(`This is a post operation`);
-    console.log(req.body);
-  
+    console.log(req.body);  
     const administrador = await administradorService.createAdministrador(req.body);
     
     return res.status(201).json(administrador);
@@ -63,7 +62,7 @@ router.post('/logIn', /*Authenticate,*/ async (req, res) => {
         }
 
         
-      });
+    });
 
 
 export default router;

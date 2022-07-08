@@ -38,7 +38,6 @@ const departamentoService = new DepartamentoService();
 
 router.post('', Authenticate, async (req, res) => {
     console.log(`This is a post operation`);
-  
     const departamento = await departamentoService.createDepartamento(req.body);
     
     return res.status(201).json(departamento);

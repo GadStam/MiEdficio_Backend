@@ -37,13 +37,13 @@ const edificioService = new EdificioService();
  */
 router.post('', Authenticate, async (req, res) => {
     console.log(`This is a post operation`);
-  
+
     const edificio = await edificioService.createEdificio(req.body);
     
     return res.status(201).json(edificio);
     });
 
- /**
+/**
  * @swagger
  * /edificio/{mail & contraseña}:
  *   get:
@@ -66,10 +66,9 @@ router.post('', Authenticate, async (req, res) => {
         console.log(`This is a get operation`);
 
         const edificio = await edificioService.getEdificio(req.body);
-      
-        return res.status(201).json(edificio);
-      });
 
-  
+        return res.status(201).json(edificio);
+    });
+
 
 export default router;

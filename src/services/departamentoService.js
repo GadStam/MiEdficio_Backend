@@ -72,7 +72,7 @@ export class DepartamentoService {
         await pool.connect()
         console.log(departamento.codigo)
         let response
-        let query=`SELECT * from ${departamentoTabla} WHERE codigo = ${departamento.codigo}`
+        let query=`SELECT * from ${departamentoTabla} WHERE codigo='${departamento.codigo}'`
         response=await pool.query(query)
         console.log(response.rows)
         return response.rows;
@@ -82,7 +82,8 @@ export class DepartamentoService {
         console.log('This is a function on the service');
         await pool.connect()
         let response;
-        let query=`UPDATE ${departamentoTabla} SET nombre = ${departamento.nombre}, apellido = ${departamento.apellido}, dni = ${departamento.dni} WHERE codigo = ${codigo.codigo}`;
+        console.log(codigo)
+        let query=`UPDATE ${departamentoTabla} SET nombre = '${departamento.nombre}', apellido = '${departamento.apellido}', dni = '${departamento.dni}', telefono = '${departamento.telefono}' WHERE codigo = '${codigo}'`;
         response=await pool.query(query)
         console.log(response)
 
