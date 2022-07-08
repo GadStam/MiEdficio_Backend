@@ -1,5 +1,6 @@
 import { ExtractJwt, Strategy } from "passport-jwt";
 import passport from "passport";
+import jwt from 'jsonwebtoken'
 import "dotenv/config";
 
 const opt = {
@@ -20,12 +21,21 @@ export const jwtStrategy = new Strategy(opt, (jwt_payload, done) => {
 });
 
 export const Authenticate = (req, res, next) => {
-  passport.authenticate(jwtStrategy, (err, user) => {
-    console.log(user);
-    if (err) res.status(401).send({ message: 'Unauthorized' });
-    if (!user) res.status(401).send({ message: 'Unauthorized' });
-    else {
-      next();
-    }
-  })(req, res, next);
+  let token = req.headers['authorization']
+  token = token.replace("Bearer ", "")
+  // console.log(token);
+  const isValid = jwt.verify(token, process.env.AUTH_HS256_KEY)
+  if(isValid){
+    return next()
+  }
+
+  return res.status(401)
+  // passport.authenticate(jwtStrategy, (err, user) => {
+  //   console.log(user);
+  //   if (err) res.status(401).send({ message: 'Unauthorized' });
+  //   if (!user) res.status(401).send({ message: 'Unauthorized' });
+  //   else {
+  //     next();
+  //   }
+  // })(req, res, next);
 };

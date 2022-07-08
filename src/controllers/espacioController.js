@@ -37,6 +37,10 @@ router.get('/', Authenticate, async (req, res) => {
       return res.status(201).json(espacios);
     });
 
+
+
+
+    
     router.get('/test', async (req, res) => {
 console.log("holaaaaaaaaaaaaaaa")
     

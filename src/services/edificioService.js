@@ -1,9 +1,9 @@
 import 'dotenv/config'
-import dbHelper from '../../helper.js'
+import pool from '../../db.js';
 
 const edificioTabla = process.env.DB_TABLA_EDIFCIOS;
-const edificioXespacioTabla= process.env.DB_TABLA_EDIFICIOSXESPACIO;
-const adminTabla= process.env.DB_TABLA_ADMIN
+const edificioXespacioTabla = process.env.DB_TABLA_EDIFICIOSXESPACIO;
+const adminTabla = process.env.DB_TABLA_ADMIN
 
 
 export class EdificioService {
@@ -13,51 +13,46 @@ export class EdificioService {
         let response
         let response2
         let response3
-        let query=`INSERT INTO ${edificioTabla} (Direccion, Año_Construccion, CUIT, Clave_Suterh, Id_Administrador, Nro_Encargado, Nro_Emergencia) VALUES (@Direccion, @Año_Construccion, @CUIT, @Clave_Suterh, @Id_Administrador, @Nro_Encargado, @Nro_Emergencia) `;
-        let query2=`INSERT INTO ${edificioXespacioTabla} (Id_EspacioCC,Id_Edificio) values (@Id_EspacioCC,@Id_Edificio)`
-        let query3=`SELECT MAX(Id_Edificio) as Id_Edificio from ${edificioTabla}`
-        response=await dbHelper (undefined, {
-            Direccion: edificio.Direccion,
-            Año_construccion: edificio.Año_Construccion,
-            CUIT: edificio.CUIT, 
-            Clave_Suterh: edificio.Clave_SUTERH, 
-            Id_Administrador: edificio.Id_Administrador, 
-            Nro_Encargado: edificio.Nro_Encargado, 
-            Nro_Emergencia:edificio.Nro_Emergencia
-        },query)
-        response3=await dbHelper(undefined,undefined, query3)
-                if(edificio.Id_EspacioCC !== undefined){
-            edificio.Id_EspacioCC.forEach(async(espacio) => {
+        let query = `INSERT INTO ${edificioTabla} (direccion, año_construccion, cuit, clave_suterh, id_administrador, nro_encargado, nro_emergencia) VALUES (${edificio.direccion}, ${edificio.año_construccion}, ${edificio.cuit}, ${edificio.clave_suterh}, ${edificio.id_administrador}, ${edificio.nro_encargado}, ${edificio.nro_emergencia}) `;
+        let query2 = `INSERT INTO ${edificioXespacioTabla} (id_espaciocc,id_edificio) values (${edificio.id_espaciocc}, ${edificio.id_edificio})`
+        let query3 = `SELECT MAX(id_edificio) as id_edificio from ${edificioTabla}`
+        await pool.connect()
+        response = await pool.query(query)
+        response3 = await pool.query(query3)
+        if (edificio.Id_EspacioCC !== undefined) {
+            edificio.Id_EspacioCC.forEach(async (espacio) => {
                 console.log('espacio', espacio)
-                response2=await dbHelper(undefined,{Id_EspacioCC:espacio,Id_Edificio:response3.recordset[0].Id_Edificio},query2)
+                response2 = await pool.query(query2)
             })
         }
-        return response.recordset;
+        return response.rows;
     }
 
     getEdificio = async (administrador) => {
-        console.log('This is a function on the service');
-
-        const{Mail, Contraseña}= administrador
-
+        console.log('This is a function on the serviceeeeeeeeeeeeeee');
+        
         let response
-        let query=`SELECT * from ${edificioTabla}`;
-        let query2=`SELECT Id_Administrador from ${adminTabla} WHERE Mail=@Mail and Contraseña=@Contraseña`
-        let Id_Administrador=0
+        let query = `SELECT * from ${edificioTabla}`;
+        let query2 = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' AND contraseña='${administrador.contraseña}'`
 
-        if(Mail && Contraseña){
-            Id_Administrador=await dbHelper (undefined,{Mail, Contraseña},query2)
-            console.log(Id_Administrador.recordset)
-            if(Id_Administrador.recordset!=0){
-                query=`SELECT * from ${edificioTabla} WHERE Id_Administrador=@Id_Administrador`
-                response=await dbHelper (undefined,{Id_Administrador:Id_Administrador.recordset[0].Id_Administrador},query)
-            }else{
-                response=0
+        await pool.connect()
+
+        
+        if (administrador.mail && administrador.contraseña) {
+            console.log("entre")
+            const Id_Administrador = await pool.query(query2)
+            console.log("otra cosa")
+            console.log(Id_Administrador.rows[0].id_administrador)
+            if (Id_Administrador.rows != 0) {
+                query = `SELECT * from ${edificioTabla} WHERE id_administrador='${Id_Administrador.rows[0].id_administrador}'`
+                response = await pool.query(query)
+            } else {
+                response = 0
             }
-        }else{
-            response=0
+        } else {
+            response = 0
         }
-        console.log(response.recordset)
-        return response.recordset;
+        console.log(response.rows)
+        return response.rows;
     }
 }

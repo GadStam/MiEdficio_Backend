@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { AdministradorService } from '../services/administradorService.js';
 import { Authenticate } from '../common/jwt.strategy.js';
+import { AuthService } from '../services/authService.js';
 
+const authService = new AuthService();
 
 const router = Router();
 const administradorService = new AdministradorService();
@@ -53,10 +55,11 @@ router.post('/logIn', /*Authenticate,*/ async (req, res) => {
         const administrador = await administradorService.getAdministrador(req.body);
         //console.log(administrador[0])
         if(administrador[0]===undefined){
-            console.log("HOLA GADI")
-            return res.status(401).json(administrador);
+            return res.status(404);
         }else{
-            return res.status(201).json(administrador);
+            const id = administrador[0].id_administrador
+            const token = authService.getToken(id)
+            return res.status(200).json(token);
         }
 
         

@@ -105,9 +105,9 @@ router.put('/:codigo', Authenticate, async (req, res) => {
  *       400:
  *         description: Departamento can not be found
  */
-router.get('/:codigo',Authenticate, async (req,res) => {
+router.post('/codigo',Authenticate, async (req,res) => {
 
-    const departamento = await departamentoService.getDepartamentoByCodigo(req.params.codigo)
+    const departamento = await departamentoService.getDepartamentoByCodigo(req.body)
 
     return res.status(201).json(departamento);
 })
