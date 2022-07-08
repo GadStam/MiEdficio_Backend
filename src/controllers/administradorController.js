@@ -51,7 +51,7 @@ router.post('/logIn', /*Authenticate,*/ async (req, res) => {
     console.log(`This is a get operation`);
 
         const administrador = await administradorService.getAdministrador(req.body);
-        console.log(administrador[0])
+        //console.log(administrador[0])
         if(administrador[0]===undefined){
             console.log("HOLA GADI")
             return res.status(401).json(administrador);

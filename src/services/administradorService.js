@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import pool from '../../db.js';
 import dbHelper from '../../helper.js'
 
 const adminTabla = process.env.DB_TABLA_ADMIN;
@@ -6,27 +7,28 @@ const adminTabla = process.env.DB_TABLA_ADMIN;
 export class AdministradorService {
 
     createAdministrador = async (administrador) => {
+        await pool.connect()
         console.log('This is a function on the service');
         let response
-        let query=`INSERT INTO ${adminTabla} (Nombre, Apellido, Mail, Contraseña, Telefono) VALUES (@Nombre, @Apellido,  @Mail, @Contraseña, @Telefono) `;
-        response=await dbHelper (undefined,administrador,query)
+        let query=`INSERT INTO ${adminTabla} (nombre, apellido, mail, contraseña, telefono) VALUES ('${administrador.nombre}', '${administrador.apellido}',  '${administrador.mail}', '${administrador.contraseña}', '${administrador.telefono}') `;
+        response=await pool.query(query)
+        // response= await dbHelper(query)
         console.log(response)
-        return response.recordset;
+        return response.rowCount;
     }
 
-    getAdministrador = async (edificio) => {
+    getAdministrador = async (administrador) => {
         console.log('This is a function on the service');
         let response=0
-        let query=`SELECT Id_Administrador from ${adminTabla} WHERE Mail=@Mail and Contraseña=@Contraseña`
+        await pool.connect()
+        let query=`SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
 
-        const{Mail, Contraseña}= edificio
-
-        if(Mail && Contraseña){
-            response=await dbHelper (undefined,{Mail, Contraseña},query)
+        if(administrador.mail && administrador.contraseña){
+        response=await pool.query(query)
         }else{
             response=0
         }
-        console.log(response.recordset)
-        return response.recordset;
+        console.log(response.rows)
+        return response.rows;
     }
 }
