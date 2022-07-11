@@ -69,7 +69,7 @@ router.get('/:id', Authenticate, async(req, res) => {
     console.log(edificio[0])
     if (edificio[0] === undefined) {
         console.log("tarda")
-        return res.status(404);
+        return res.status(404).json("No se encontró edificios");
     } else {
         return res.status(201).json(edificio);
     }
