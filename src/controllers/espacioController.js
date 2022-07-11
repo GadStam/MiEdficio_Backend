@@ -29,23 +29,23 @@ const espacioService = new EspacioService();
  *               items:
  *                 $ref: '#/components/schemas/Post'
  */
-router.get('/', Authenticate, async (req, res) => {
-      console.log(`This is a get operation`);
-    
-      const espacios = await espacioService.getEspacios();
-    
-      return res.status(201).json(espacios);
-    });
+router.get('/', Authenticate, async(req, res) => {
+    console.log(`This is a get operation`);
+
+    const espacios = await espacioService.getEspacios();
+
+    return res.status(201).json(espacios);
+});
 
 
 
 
-    
-    router.get('/test', async (req, res) => {
-console.log("holaaaaaaaaaaaaaaa")
-    
-      return res.status(200).send("Holaaaaaaaaaaaaaaaaaaaaa eitan");
-    });
-  
+
+router.get('/test', async(req, res) => {
+    console.log("holaaaaaaaaaaaaaaa")
+
+    return res.status(200).send("AGACHATE Y CONOCELO");
+});
+
 
 export default router;
