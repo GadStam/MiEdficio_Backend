@@ -8,7 +8,7 @@ const adminTabla = process.env.DB_TABLA_ADMIN
 
 export class EdificioService {
 
-    createEdificio = async (edificio) => {
+    createEdificio = async(edificio) => {
         console.log('This is a function on the service');
         console.log(edificio.id_espaciocc[0])
         let response
@@ -21,7 +21,7 @@ export class EdificioService {
         response = await pool.query(query)
         response3 = await pool.query(query3)
         if (edificio.id_espaciocc !== undefined) {
-            edificio.id_espaciocc.forEach(async (espacio) => {
+            edificio.id_espaciocc.forEach(async(espacio) => {
                 console.log('espacio', espacio)
                 response2 = await pool.query(query2)
             })
@@ -29,27 +29,13 @@ export class EdificioService {
         return response.rows;
     }
 
-    getEdificio = async (administrador) => {
+    getEdificio = async(id) => {
         console.log('This is a function on the serviceeeeeeeeeeeeeee');
-        
         let response
-        let query = `SELECT * from ${edificioTabla}`;
-        let query2 = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' AND contraseña='${administrador.contraseña}'`
-
+        let query = `SELECT * from ${edificioTabla} WHERE id_administrador='${id}'`;
         await pool.connect()
-
-        
-        if (administrador.mail && administrador.contraseña) {
-            console.log("entre")
-            const Id_Administrador = await pool.query(query2)
-            console.log("otra cosa")
-            console.log(Id_Administrador.rows[0].id_administrador)
-            if (Id_Administrador.rows != 0) {
-                query = `SELECT * from ${edificioTabla} WHERE id_administrador='${Id_Administrador.rows[0].id_administrador}'`
-                response = await pool.query(query)
-            } else {
-                response = 0
-            }
+        if (id = !0) {
+            response = await pool.query(query)
         } else {
             response = 0
         }

@@ -43,7 +43,7 @@ router.post('', Authenticate, async (req, res) => {
     return res.status(201).json(departamento);
     });
 
-    /**
+/**
  * @swagger
  * /departamentos/{codigo}:
  *   put:

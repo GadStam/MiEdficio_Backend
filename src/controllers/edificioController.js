@@ -3,7 +3,7 @@ import { EdificioService } from '../services/edificioService.js';
 import { Authenticate } from '../common/jwt.strategy.js';
 
 
-    /**
+/**
  * @swagger
  *  tags:
  *    name: Edificio
@@ -35,18 +35,18 @@ const edificioService = new EdificioService();
  *       500:
  *         description: Some server error
  */
-router.post('', Authenticate, async (req, res) => {
+router.post('', Authenticate, async(req, res) => {
     console.log(`This is a post operation`);
 
     const edificio = await edificioService.createEdificio(req.body);
-    
+
     return res.status(201).json(edificio);
-    });
+});
 
 /**
  * @swagger
- * /edificio/{mail & contraseña}:
- *   get:
+ * /edificios/edificios:
+ *   post:
  *     summary: gets edificio by its administrador
  *     tags: [Edificio]
  *     parameters:
@@ -62,13 +62,18 @@ router.post('', Authenticate, async (req, res) => {
  *       400:
  *         description: Edificio can not be found
  */
-    router.post('/edificios', Authenticate, async (req, res) => {
-        console.log(`This is a get operation`);
+router.get('/:id', Authenticate, async(req, res) => {
+    console.log(`This is a get operation`);
 
-        const edificio = await edificioService.getEdificio(req.body);
-
+    const edificio = await edificioService.getEdificio(req.params.id);
+    console.log(edificio[0])
+    if (edificio[0] === undefined) {
+        console.log("tarda")
+        return res.status(404);
+    } else {
         return res.status(201).json(edificio);
-    });
+    }
+});
 
 
 export default router;

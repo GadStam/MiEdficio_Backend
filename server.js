@@ -6,7 +6,6 @@ import EspacioRouter from "./src/controllers/espacioController.js";
 import EdificioRouter from "./src/controllers/edificioController.js";
 import DepartamentoRouter from "./src/controllers/departamentoController.js";
 import AdministradorRouter from "./src/controllers/administradorController.js";
-import AuthRouter from "./src/controllers/authController.js"
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 
@@ -17,7 +16,6 @@ app.use(express.json());
 passport.use(jwtStrategy);
 app.use(passport.initialize());
 app.use("/espacios", EspacioRouter);
-app.use("/auth", AuthRouter);
 app.use("/edificios", EdificioRouter)
 app.use("/departamentos", DepartamentoRouter)
 app.use("/administradores", AdministradorRouter)
