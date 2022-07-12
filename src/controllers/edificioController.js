@@ -36,15 +36,19 @@ const edificioService = new EdificioService();
  *         description: Some server error
  */
 router.post('', Authenticate, async(req, res) => {
-    console.log(`This is a post operation`);
+    try{
+        console.log(`This is a post operation`);
 
-    const edificio = await edificioService.createEdificio(req.body);
+        const edificio = await edificioService.createEdificio(req.body);
 
-    console.log(edificio)
-    if(edificio===undefined){
-        return res.status(404).json("datos repetidos")
-    }else{
-        return res.status(201).json(edificio);
+        console.log(edificio)
+        if(edificio===undefined){
+            return res.status(404).json("datos repetidos")
+        }else{
+            return res.status(201).json(edificio);
+        }
+    } catch(error){
+        return res.status(500).json(error)
     }
 });
 
@@ -68,15 +72,19 @@ router.post('', Authenticate, async(req, res) => {
  *         description: Edificio can not be found
  */
 router.get('/:id', Authenticate, async(req, res) => {
-    console.log(`This is a get operation`);
+    try{
+        console.log(`This is a get operation`);
 
-    const edificio = await edificioService.getEdificio(req.params.id);
-    console.log(edificio[0])
-    if (edificio[0] === undefined) {
-        console.log("tarda")
-        return res.status(404).json("No se encontró edificios");
-    } else {
-        return res.status(201).json(edificio);
+        const edificio = await edificioService.getEdificio(req.params.id);
+        console.log(edificio[0])
+        if (edificio[0] === undefined) {
+            console.log("tarda")
+            return res.status(404).json("No se encontró edificios");
+        } else {
+            return res.status(201).json(edificio);
+        }
+    }catch(error){
+        return res.status(500).json(error)
     }
 });
 

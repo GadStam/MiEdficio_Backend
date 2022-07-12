@@ -37,11 +37,15 @@ const departamentoService = new DepartamentoService();
  */
 
 router.post('', Authenticate, async (req, res) => {
-    console.log(`This is a post operation`);
-    const departamento = await departamentoService.createDepartamento(req.body);
-    
-    return res.status(201).json(departamento);
-    });
+    try{
+        console.log(`This is a post operation`);
+        const departamento = await departamentoService.createDepartamento(req.body);
+        
+        return res.status(201).json(departamento);
+    }catch(error){
+        return res.status(500).json(error)
+    }
+});
 
 /**
  * @swagger
@@ -76,11 +80,15 @@ router.post('', Authenticate, async (req, res) => {
  *
  */
 router.put('/:codigo', Authenticate, async (req, res) => {
-    console.log(`this is a put operation`)
+    try{
+        console.log(`this is a put operation`)
 
-    const departamento = await departamentoService.updateDepartamentoByCodigo(req.params.codigo, req.body)
+        const departamento = await departamentoService.updateDepartamentoByCodigo(req.params.codigo, req.body)
 
-    return res.status(200).json(departamento);
+        return res.status(200).json(departamento);
+    } catch(error){
+        return res.status(500).json(error)
+    }
 })
 
 

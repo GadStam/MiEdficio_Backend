@@ -42,13 +42,17 @@ const administradorService = new AdministradorService();
 
 
 router.post('', async(req, res) => {
-    console.log(`This is a post operation`);
-    console.log(req.body);
-    const administrador = await administradorService.createAdministrador(req.body);
-    if(administrador===undefined){
-        return res.status(404).json("datos repetidos")
-    }else{
-        return res.status(201).json(administrador);
+    try{
+        console.log(`This is a post operation`);
+        console.log(req.body);
+        const administrador = await administradorService.createAdministrador(req.body);
+        if(administrador===undefined){
+            return res.status(404).json("datos repetidos")
+        }else{
+            return res.status(201).json(administrador);
+        }
+    } catch (error) {
+        return res.status(500).json(error)
     }
 });
 

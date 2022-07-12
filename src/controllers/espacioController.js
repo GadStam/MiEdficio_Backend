@@ -30,11 +30,15 @@ const espacioService = new EspacioService();
  *                 $ref: '#/components/schemas/Post'
  */
 router.get('/', Authenticate, async(req, res) => {
-    console.log(`This is a get operation`);
+    try{
+        console.log(`This is a get operation`);
 
-    const espacios = await espacioService.getEspacios();
+        const espacios = await espacioService.getEspacios();
 
-    return res.status(201).json(espacios);
+        return res.status(201).json(espacios);
+    }catch(error){
+        return res.status(500).json(error)
+    }
 });
 
 
