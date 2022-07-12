@@ -40,7 +40,12 @@ router.post('', Authenticate, async(req, res) => {
 
     const edificio = await edificioService.createEdificio(req.body);
 
-    return res.status(201).json(edificio);
+    console.log(edificio)
+    if(edificio===undefined){
+        return res.status(404).json("datos repetidos")
+    }else{
+        return res.status(201).json(edificio);
+    }
 });
 
 /**

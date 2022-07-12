@@ -45,8 +45,11 @@ router.post('', async(req, res) => {
     console.log(`This is a post operation`);
     console.log(req.body);
     const administrador = await administradorService.createAdministrador(req.body);
-
-    return res.status(201).json(administrador);
+    if(administrador===undefined){
+        return res.status(404).json("datos repetidos")
+    }else{
+        return res.status(201).json(administrador);
+    }
 });
 
 /**
@@ -101,37 +104,5 @@ router.get('/:id', Authenticate, async(req, res) => {
         return res.status(201).json(administrador);
     }
 });
-
-
-/*  Administrador:
-    type: "object"
-    required:
-    - "nombre"
-    - "apellido"
-    - "mail"
-    - "contraseña"
-    - "telefono"
-    properties:
-      category:
-        $ref: "#/definitions/Category"
-      id_administrador:
-        type: "integer"
-        format: "int64"
-      nombre:
-        type: "string"
-        example: "Gad"
-      apellido:
-        type: "string"
-        example: "Stamati"
-      mail:
-        type: "string"
-        example: gadstam@71
-      contraseña:
-        type: "string"
-        example: "BOCA123"
-      telefono:
-        type: "integer"
-        example: "1159558248"
-*/
 
 export default router;

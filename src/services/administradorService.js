@@ -9,9 +9,17 @@ export class AdministradorService {
         await pool.connect()
         console.log('This is a function on the service');
         let response
-        let query = `INSERT INTO ${adminTabla} (nombre, apellido, mail, contraseña, telefono) VALUES ('${administrador.nombre}', '${administrador.apellido}',  '${administrador.mail}', '${administrador.contraseña}', '${administrador.telefono}') `;
+        const query = `INSERT INTO ${adminTabla} (nombre, apellido, mail, contraseña, telefono) VALUES ('${administrador.nombre}', '${administrador.apellido}',  '${administrador.mail}', '${administrador.contraseña}', '${administrador.telefono}') `;
+        const query2 = `SELECT * from ${adminTabla}`
+        administradores = await pool.query(query2)
+        const result = administradores.rows.filter(word => word.mail===administrador.mail || word.contraseña===administrador.contraseña);
+        console.log(result[0])
+        if(result[0] !== undefined){
+            return response
+        }
         response = await pool.query(query)
         console.log(response)
+
         return response.rowCount;
     }
 

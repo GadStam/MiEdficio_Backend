@@ -14,9 +14,17 @@ export class EdificioService {
         let response
         let response2
         let response3
+        let edificios
         let query = `INSERT INTO ${edificioTabla} (direccion, año_construccion, cuit, clave_suterh, id_administrador, nro_encargado, nro_emergencia) VALUES ('${edificio.direccion}', '${edificio.año_construccion}', '${edificio.cuit}', '${edificio.clave_suterh}', '${edificio.id_administrador}', '${edificio.nro_encargado}', '${edificio.nro_emergencia}') `;
         let query3 = `SELECT MAX(id_edificio) as id_edificio from ${edificioTabla}`
+        let query4= `SELECT * from ${edificioTabla}`
         await pool.connect()
+        edificios= await pool.query(query4)
+        const result = edificios.rows.filter(word => word.cuit===edificio.cuit || word.clave_suterh===edificio.clave_suterh || word.direccion===edificio.direccion);
+        console.log(result[0])
+        if(result[0] !== undefined){
+            return response
+        }
         response = await pool.query(query)
         response3 = await pool.query(query3)
         console.log(response3.rows[0].id_edificio)
