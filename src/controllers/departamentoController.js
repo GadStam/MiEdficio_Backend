@@ -114,9 +114,13 @@ router.put('/:codigo', Authenticate, async (req, res) => {
  */
 router.post('/codigo',Authenticate, async (req,res) => {
 
-    const departamento = await departamentoService.getDepartamentoByCodigo(req.body)
+    try{
+        const departamento = await departamentoService.getDepartamentoByCodigo(req.body)
 
-    return res.status(201).json(departamento);
+        return res.status(201).json(departamento);
+    }catch(error){
+        return res.status(500).json(error)
+    }
 })
 
 export default router;

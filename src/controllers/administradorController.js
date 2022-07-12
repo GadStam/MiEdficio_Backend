@@ -97,15 +97,19 @@ router.post('/logIn', async(req, res) => {
 });
 
 router.get('/:id', Authenticate, async(req, res) => {
-    console.log(`This is a get operation`);
+    try{
+        console.log(`This is a get operation`);
 
-    const administrador = await administradorService.getAdministradorById(req.params.id);
-    console.log(administrador[0])
-    if (administrador[0] === undefined) {
-        console.log("tarda")
-        return res.status(404).json("no se encontró administrador");
-    } else {
-        return res.status(201).json(administrador);
+        const administrador = await administradorService.getAdministradorById(req.params.id);
+        console.log(administrador[0])
+        if (administrador[0] === undefined) {
+            console.log("tarda")
+            return res.status(404).json("no se encontró administrador");
+        } else {
+            return res.status(201).json(administrador);
+        }
+    }catch(error){
+        return res.status(500).json(error)
     }
 });
 
