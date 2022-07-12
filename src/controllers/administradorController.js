@@ -48,7 +48,7 @@ router.post('', async(req, res) => {
     if(administrador===undefined){
         return res.status(404).json("datos repetidos")
     }else{
-        return res.status(202).json(administrador);
+        return res.status(201).json(administrador);
     }
 });
 
