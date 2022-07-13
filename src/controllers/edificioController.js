@@ -93,7 +93,7 @@ router.get('/:id', Authenticate, async(req, res) => {
             return res.status(201).json(edificio);
         }
     }catch(error){
-        return res.status(500).json(error)
+        return res.status(500).json(error)//
     }
 });
 
