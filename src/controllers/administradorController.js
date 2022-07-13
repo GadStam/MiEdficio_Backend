@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { md5 } from 'md5';
 import { AdministradorService } from '../services/administradorService.js';
 import { Authenticate } from '../common/jwt.strategy.js';
 import { AuthService } from '../services/authService.js';
@@ -43,6 +44,8 @@ const administradorService = new AdministradorService();
 
 router.post('', async(req, res) => {
     try{
+        let md5=require(req.body.contraseña)
+        console.log(md5)
         console.log(`This is a post operation`);
         console.log(req.body);
         const administrador = await administradorService.createAdministrador(req.body);

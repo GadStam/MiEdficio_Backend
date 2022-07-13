@@ -42,13 +42,19 @@ export class AdministradorService {
         console.log('This is a function on the serviceeeeeeeeeeeeeee');
         let response
         let query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
+        try{
         await pool.connect()
         if (id = !0) {
             response = await pool.query(query)
         } else {
             response = 0
         }
+    }catch(error){
+        console.log(error)
+    }
+        
         console.log(response.rows)
+
         return response.rows;
     }
 

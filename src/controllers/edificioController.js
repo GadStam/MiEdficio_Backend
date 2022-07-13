@@ -75,11 +75,20 @@ router.get('/:id', Authenticate, async(req, res) => {
     try{
         console.log(`This is a get operation`);
 
+        // Validar el tipo de datos de req.params.id
+        if(Number(req.params.id)){
+
+        } else {
+            // id no es un numero => 400
+        }
+
         const edificio = await edificioService.getEdificio(req.params.id);
         console.log(edificio[0])
         if (edificio[0] === undefined) {
             console.log("tarda")
-            return res.status(404).json("No se encontró edificios");
+            return res.status(404).json({
+                messageCode: "BAD_PARAMS"
+            });//"No se encontró edificios");
         } else {
             return res.status(201).json(edificio);
         }
