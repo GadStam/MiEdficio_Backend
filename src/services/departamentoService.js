@@ -80,7 +80,6 @@ export class DepartamentoService {
                 }
             }
         }
-        await client.end()
 
     }
 
@@ -91,7 +90,6 @@ export class DepartamentoService {
         let query=`SELECT * from ${departamentoTabla} WHERE codigo='${departamento.codigo}'`
         response=await pool.query(query)
         console.log(response.rows)
-        await client.end()
         return response.rows;
     }
 
@@ -103,7 +101,6 @@ export class DepartamentoService {
         let query=`UPDATE ${departamentoTabla} SET nombre = '${departamento.nombre}', apellido = '${departamento.apellido}', dni = '${departamento.dni}', telefono = '${departamento.telefono}' WHERE codigo = '${codigo}'`;
         response=await pool.query(query)
         console.log(response)
-        await client.end()
 
 
         return response.rows;

@@ -20,7 +20,6 @@ export class AdministradorService {
         response = await pool.query(query)
         console.log(response)
 
-        await client.end()
         return response.rowCount;
     }
 

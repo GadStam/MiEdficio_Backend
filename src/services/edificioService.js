@@ -23,7 +23,6 @@ export class EdificioService {
         const result = edificios.rows.filter(word => word.cuit===edificio.cuit || word.clave_suterh===edificio.clave_suterh || word.direccion===edificio.direccion);
         console.log(result[0])
         if(result[0] !== undefined){
-            await client.end()
             return response
         }
         response = await pool.query(query)
@@ -37,7 +36,6 @@ export class EdificioService {
                 response2 = await pool.query(query2)
             })
         }
-        await client.end()
         return response.rows;
     }
 
@@ -52,7 +50,6 @@ export class EdificioService {
             response = 0
         }
         console.log(response.rows)
-        await client.end()
         return response.rows;
     }
 }
