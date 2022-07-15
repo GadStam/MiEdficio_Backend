@@ -19,6 +19,7 @@ export class AdministradorService {
         }
         response = await pool.query(query)
         console.log(response)
+        
 
         return response.rowCount;
     }
@@ -34,6 +35,7 @@ export class AdministradorService {
             response = 0
         }
         console.log(response.rows)
+        pool.end()
         return response.rows;
     }
 
@@ -42,19 +44,21 @@ export class AdministradorService {
         let response
         let query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
         await pool.connect()
-        try{
-            if (id = !0) {
-                response = await pool.query(query)
-            } else {
-                response = 0
+            try{
+                if (id = !0) {
+                    response = await pool.query(query)
+                } else {
+                    response = 0
+                }
+            }catch(error){
+                console.log(error)
             }
-        }catch(error){
-            console.log(error)
-        }
+
 
         console.log(response.rows)
         return response.rows;
-    }
+        }
+    
 
 
 }
