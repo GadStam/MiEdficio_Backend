@@ -3,6 +3,7 @@ import { AdministradorService } from '../services/administradorService.js';
 import { Authenticate } from '../common/jwt.strategy.js';
 import { AuthService } from '../services/authService.js';
 
+
 const authService = new AuthService();
 
 const router = Router();
@@ -86,16 +87,13 @@ router.post('/logIn', async(req, res) => {
     try {
         const administrador = await administradorService.getAdministrador(req.body);
         if (administrador[0] === undefined) {
-            await client.end()
             return res.status(404).json("Error en el loguearse");
         } else {
             const id = administrador[0].id_administrador
             const token = authService.getToken(id)
-            await client.end()
             return res.status(200).json({ token, id });
         }
     }catch (error) {
-        await client.end()
         return res.status(501).json(error)
     }
 });
