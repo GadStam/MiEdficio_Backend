@@ -30,11 +30,11 @@ export class AdministradorService {
         let query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
         if (administrador.mail && administrador.contraseña) {
             response = await pool.query(query)
+            await pool.end()
         } else {
             response = 0
         }
         console.log(response.rows)
-        await pool.end()
         return response.rows;
     }
 
@@ -42,17 +42,19 @@ export class AdministradorService {
         console.log('This is a function on the serviceeeeeeeeeeeeeee');
         let response
         let query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
-        try{
         await pool.connect()
-        if (id = !0) {
-            response = await pool.query(query)
-        } else {
-            response = 0
+
+        try{
+            if (id = !0) {
+                response = await pool.query(query)
+                await pool.end()
+            } else {
+                response = 0
+            }
+        }catch(error){
+            console.log(error)
         }
-    }catch(error){
-        console.log(error)
-    }
-    await pool.end()
+
         console.log(response.rows)
         return response.rows;
     }
