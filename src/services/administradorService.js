@@ -54,7 +54,6 @@ export class AdministradorService {
     }
         
         console.log(response.rows)
-        await client.end()
         return response.rows;
     }
 
