@@ -34,6 +34,7 @@ export class AdministradorService {
             response = 0
         }
         console.log(response.rows)
+        await pool.end()
         return response.rows;
     }
 
@@ -51,7 +52,7 @@ export class AdministradorService {
     }catch(error){
         console.log(error)
     }
-        
+    await pool.end()
         console.log(response.rows)
         return response.rows;
     }
