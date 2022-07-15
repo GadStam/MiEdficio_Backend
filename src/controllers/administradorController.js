@@ -114,7 +114,7 @@ router.get('/:id', Authenticate, async(req, res) => {
             return res.status(201).json(administrador);
         }
     }catch(error){
-        return res.status(500).json(error)
+        return res.status(501).json(error)
     }
 });
 
