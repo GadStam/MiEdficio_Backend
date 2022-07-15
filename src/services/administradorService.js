@@ -36,7 +36,6 @@ export class AdministradorService {
             response = 0
         }
         console.log(response.rows)
-        await client.end()
         return response.rows;
     }
 
