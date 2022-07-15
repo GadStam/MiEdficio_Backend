@@ -30,7 +30,6 @@ export class AdministradorService {
         let query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
         if (administrador.mail && administrador.contraseña) {
             response = await pool.query(query)
-            await pool.end()
         } else {
             response = 0
         }
@@ -43,11 +42,9 @@ export class AdministradorService {
         let response
         let query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
         await pool.connect()
-
         try{
             if (id = !0) {
                 response = await pool.query(query)
-                await pool.end()
             } else {
                 response = 0
             }
