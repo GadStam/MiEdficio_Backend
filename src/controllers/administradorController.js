@@ -98,7 +98,7 @@ router.post('/logIn', async(req, res) => {
         }
     }catch (error) {
         console.log(error)
-        return res.status(501).json(error)
+        return res.status(502).json(error)
     }
 });
 
