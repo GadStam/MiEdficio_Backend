@@ -29,7 +29,6 @@ export class AdministradorService {
     getAdministrador = async(administrador) => {
         console.log('This is a function on the service');
         let response = 0
-        const pool = new Client();
         await pool.connect()
         let query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
         if (administrador.mail && administrador.contraseña) {
