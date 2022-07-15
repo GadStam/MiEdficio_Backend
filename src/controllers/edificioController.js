@@ -35,11 +35,11 @@ const edificioService = new EdificioService();
  *       500:
  *         description: Some server error
  */
-router.post('', Authenticate, async(req, res) => {
+router.post('/:id', Authenticate, async(req, res) => {
     try{
         console.log(`This is a post operation`);
 
-        const edificio = await edificioService.createEdificio(req.body);
+        const edificio = await edificioService.createEdificio(req.body, req.params.id);
 
         console.log(edificio)
         if(edificio===undefined){

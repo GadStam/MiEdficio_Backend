@@ -8,14 +8,14 @@ const adminTabla = process.env.DB_TABLA_ADMIN
 
 export class EdificioService {
 
-    createEdificio = async(edificio) => {
+    createEdificio = async(edificio, id) => {
         console.log('This is a function on the service');
         console.log(edificio.id_espaciocc[0])
         let response
         let response2
         let response3
         let edificios
-        let query = `INSERT INTO ${edificioTabla} (direccion, año_construccion, cuit, clave_suterh, id_administrador, nro_encargado, nro_emergencia) VALUES ('${edificio.direccion}', '${edificio.año_construccion}', '${edificio.cuit}', '${edificio.clave_suterh}', '${edificio.id_administrador}', '${edificio.nro_encargado}', '${edificio.nro_emergencia}') `;
+        let query = `INSERT INTO ${edificioTabla} (direccion, año_construccion, cuit, clave_suterh, id_administrador, nro_encargado, nro_emergencia) VALUES ('${edificio.direccion}', '${edificio.año_construccion}', '${edificio.cuit}', '${edificio.clave_suterh}', '${id}', '${edificio.nro_encargado}', '${edificio.nro_emergencia}') `;
         let query3 = `SELECT MAX(id_edificio) as id_edificio from ${edificioTabla}`
         let query4= `SELECT * from ${edificioTabla}`
         await pool.connect()
