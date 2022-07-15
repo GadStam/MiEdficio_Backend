@@ -97,6 +97,7 @@ router.post('/logIn', async(req, res) => {
             return res.status(200).json({ token, id });
         }
     }catch (error) {
+        console.log(error)
         return res.status(501).json(error)
     }
 });
