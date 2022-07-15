@@ -1,4 +1,6 @@
 import 'dotenv/config'
+import { Client } from 'pg/lib';
+import pool from '../../db.js';
 import pool from '../../db.js';
 
 const adminTabla = process.env.DB_TABLA_ADMIN;
@@ -27,6 +29,7 @@ export class AdministradorService {
     getAdministrador = async(administrador) => {
         console.log('This is a function on the service');
         let response = 0
+        const pool = new Client();
         await pool.connect()
         let query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
         if (administrador.mail && administrador.contraseña) {
@@ -35,7 +38,7 @@ export class AdministradorService {
             response = 0
         }
         console.log(response.rows)
-        pool.end()
+        await pool.end()
         return response.rows;
     }
 
