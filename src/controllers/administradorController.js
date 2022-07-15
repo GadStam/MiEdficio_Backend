@@ -86,14 +86,17 @@ router.post('/logIn', async(req, res) => {
     try {
         const administrador = await administradorService.getAdministrador(req.body);
         if (administrador[0] === undefined) {
+            await client.end()
             return res.status(404).json("Error en el loguearse");
         } else {
             const id = administrador[0].id_administrador
             const token = authService.getToken(id)
+            await client.end()
             return res.status(200).json({ token, id });
         }
     }catch (error) {
-        return res.status(500).json(error)
+        await client.end()
+        return res.status(501).json(error)
     }
 });
 
