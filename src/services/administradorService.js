@@ -34,6 +34,7 @@ export class AdministradorService {
         } else {
             response = 0
         }
+        done()
         console.log(response.rows)
         return response.rows;
     }
