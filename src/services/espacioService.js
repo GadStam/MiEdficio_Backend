@@ -13,6 +13,7 @@ export class EspacioService {
         let query=`SELECT * from ${espacioTabla}`
         response=await pool.query(query)
         console.log(response)
+        await pool.end()
         return response.rows;
     }
 
