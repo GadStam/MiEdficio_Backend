@@ -1,6 +1,4 @@
 import 'dotenv/config'
-import { Client } from 'pg/lib';
-import pool from '../../db.js';
 import pool from '../../db.js';
 
 const adminTabla = process.env.DB_TABLA_ADMIN;
