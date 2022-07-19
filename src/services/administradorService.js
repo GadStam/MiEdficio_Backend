@@ -23,7 +23,7 @@ export class AdministradorService {
 
         return response.rowCount;
     }
-//hodaaaa
+//hodaaaaa
     getAdministrador = async(administrador) => {
         console.log('This is a function on the service');
         let response = 0
