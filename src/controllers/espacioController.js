@@ -29,7 +29,7 @@ const espacioService = new EspacioService();
  *               items:
  *                 $ref: '#/components/schemas/Post'
  */
-router.get('/', Authenticate, async(req, res) => {
+router.get('/',  async(req, res) => {
     try{
         console.log(`This is a get operation`);
 
