@@ -25,8 +25,11 @@ export class EdificioService {
         if(result[0] !== undefined){
             return response
         }
+        console.log("hoda")
         response = await pool.query(query)
+        console.log("hoda1")
         response3 = await pool.query(query3)
+        console.log("hoda2")
         console.log(response3.rows[0].id_edificio)
         if (edificio.id_espaciocc !== undefined) {
             edificio.id_espaciocc.forEach(async(espacio) => {
