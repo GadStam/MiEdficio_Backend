@@ -26,6 +26,7 @@ export class EdificioService {
             return response
         }
         console.log("hoda")
+        console.log(query)
         response = await pool.query(query)
         console.log("hoda1")
         response3 = await pool.query(query3)
