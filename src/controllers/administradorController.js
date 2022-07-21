@@ -57,7 +57,7 @@ router.post('', Authenticate, async(req, res) => { //create administrador
         return res.status(500).json(error)
     }
 });
-
+//HODAA
 {
 /**
  * @swagger
