@@ -42,7 +42,7 @@ const administradorService = new AdministradorService();
  */
 }
 
-router.post('', async(req, res) => { //create administrador
+router.post('', Authenticate, async(req, res) => { //create administrador
     console.log(`This is a post operation`);
     try{
         console.log(req.body);

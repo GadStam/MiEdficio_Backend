@@ -2,17 +2,18 @@ import { Router } from 'express';
 import { EspacioService } from '../services/espacioService.js';
 import { Authenticate } from '../common/jwt.strategy.js';
 
+{
 /**
  * @swagger
  *  tags:
  *    name: Espacio
  *    description: EndPoints de Espacio
  */
-
+}
 const router = Router();
 const espacioService = new EspacioService();
 
-
+{
 /**
  * @swagger
  * /espacios:
@@ -29,14 +30,30 @@ const espacioService = new EspacioService();
  *               items:
  *                 $ref: '#/components/schemas/Post'
  */
-router.get('/',  async(req, res) => {
+}
+
+router.get('/',  async(req, res) => {//trae espacios comunes
+    console.log(`This is a get operation`);
     try{
-        console.log(`This is a get operation`);
-
         const espacios = await espacioService.getEspacios();
-
         return res.status(201).json(espacios);
     }catch(error){
+        return res.status(500).json(error)
+    }
+});
+
+router.post('', async(req, res) => { //create espacio comun
+    console.log(`This is a post operation`);
+    try{
+        console.log(req.body);
+        const espacio = await espacioService.createEspacio(req.body);
+        if(espacio===undefined){
+            return res.status(404).json("ya existe ese espacio comun")
+        }else{
+            return res.status(201).json(espacio);
+        }
+    } catch (error) {
+        console.log(error)
         return res.status(500).json(error)
     }
 });
