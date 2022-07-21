@@ -6,6 +6,7 @@ import { Authenticate } from '../common/jwt.strategy.js';
 const router = Router();
 const departamentoService = new DepartamentoService();
 
+{
 /**
  * @swagger
  *  tags:
@@ -35,18 +36,19 @@ const departamentoService = new DepartamentoService();
  *       500:
  *         description: Some server error
  */
+}
 
-router.post('', Authenticate, async (req, res) => {
+router.post('', Authenticate, async (req, res) => { //create departamentos
+    console.log(`This is a post operation`);
     try{
-        console.log(`This is a post operation`);
         const departamento = await departamentoService.createDepartamento(req.body);
-        
         return res.status(201).json(departamento);
     }catch(error){
         return res.status(500).json(error)
     }
 });
 
+{
 /**
  * @swagger
  * /departamentos/{codigo}:
@@ -79,12 +81,14 @@ router.post('', Authenticate, async (req, res) => {
  *         description: Some errors happend.
  *
  */
-router.put('/:codigo', Authenticate, async (req, res) => {
+}
+router.put('/:codigo', Authenticate, async (req, res) => { //update departamento by codigo
+    console.log(`this is a put operation`)
     try{
-        console.log(`this is a put operation`)
-
         const departamento = await departamentoService.updateDepartamentoByCodigo(req.params.codigo, req.body)
-
+        if(departamento===undefined){
+            return res.status(404).json("Datos repetidos")
+        }
         return res.status(200).json(departamento);
     } catch(error){
         return res.status(500).json(error)
@@ -92,7 +96,7 @@ router.put('/:codigo', Authenticate, async (req, res) => {
 })
 
 
-
+{
 /**
  * @swagger
  * /departamentos/{codigo}:
@@ -112,11 +116,15 @@ router.put('/:codigo', Authenticate, async (req, res) => {
  *       400:
  *         description: Departamento can not be found
  */
-router.post('/codigo',Authenticate, async (req,res) => {
+}
 
+router.get('/:codigo',Authenticate, async (req,res) => {//get departamento by codigo
     try{
-        const departamento = await departamentoService.getDepartamentoByCodigo(req.body)
-
+        const departamento = await departamentoService.getDepartamentoByCodigo(req.params.codigo)
+        console.log(departamento[0])
+        if(departamento[0]===undefined){
+            return res.status(404).json("No se encontro departamento")
+        }
         return res.status(201).json(departamento);
     }catch(error){
         return res.status(500).json(error)

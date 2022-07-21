@@ -6,11 +6,11 @@ const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO;
 
 export class DepartamentoService {
 
-    //hello = () => {
-
     
     createDepartamento = async (departamento) => {
+        console.log('This is a function on the service');
 
+        //create codigo
         const generateCode = function() {
             let codigo= ''
             for(let m=0; m<6;m++){
@@ -21,7 +21,6 @@ export class DepartamentoService {
             return codigo
         }
 
-        console.log('This is a function on the service');
 
         //definiciones
         let codigo
@@ -34,45 +33,44 @@ export class DepartamentoService {
         const query2=`SELECT * from ${departamentoTabla}`
 
         await pool.connect()
-        for(let i=0; i<departamento.cant_pisos; i++){
-            if(departamento.automatico==="true"){
-                for(let j=0;  j<departamento.departamentosXpiso; j++){
-                    do {
-                        codigo=generateCode()
-                        console.log(codigo)
-                        response2=await pool.query(query2)
-                        result = response2.rows.filter(word => word.codigo===codigo);
+        for(let i=0; i<departamento.cant_pisos; i++){ //repetidor por pisos
+            if(departamento.automatico==="true"){ //automatico
+                for(let j=0;  j<departamento.departamentosXpiso; j++){ //repetidor por departamento
+                    do { 
+                        codigo=generateCode() //genera un codigo 
+                        console.log(codigo) 
+                        response2=await pool.query(query2) //trae todos los departamentos
+                        result = response2.rows.filter(word => word.codigo===codigo); //codigo repetidos
                         console.log(result[0])
-                    }while(result[0] !== undefined)
-                    if(departamento.letra==="true"){
+                    }while(result[0] !== undefined) //ya existe ese codigo
+                    if(departamento.letra==="true"){ //numeracion por letra
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
                         response=await pool.query(query)
-                    }else if(departamento.correlativa==="false"){
+                    }else if(departamento.correlativa==="false"){ //numeracion no correlativa
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${j+1}', '${departamento.id_edificio}') `;
                         response=await pool.query(query)
-                    }else{
-                        console.log("sino")
+                    }else{ //numeracion correlativa
                         k++;
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${k}', '${departamento.id_edificio}') `;
                         response=await pool.query(query)
                     }
                 }
-            }else{
-                for(let j=0; j<departamento.departamentosXpiso[i]; j++){
+            }else{ //manual
+                for(let j=0; j<departamento.departamentosXpiso[i]; j++){ //repetidor por departamento
                     do {
-                        codigo=generateCode()
+                        codigo=generateCode() //crea un codigo
                         console.log(codigo)
-                        response2=await pool.query(query2)
-                        result = response2.rows.filter(word => word.codigo===codigo);
+                        response2=await pool.query(query2) //trae departamentos 
+                        result = response2.rows.filter(word => word.codigo===codigo); //codigos repetidos
                         console.log(result[0])
-                    }while(result[0] !== undefined)
-                    if(departamento.letra==="true"){
+                    }while(result[0] !== undefined) //ya existe ese codigo
+                    if(departamento.letra==="true"){ //numeracion por letra
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
                         response=await pool.query(query)
-                    }else if(departamento.correlativa==="false"){
+                    }else if(departamento.correlativa==="false"){ //numeracion no correlativa
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${j+1}', '${departamento.id_edificio}') `;
                         response=await pool.query(query)
-                    }else{
+                    }else{// numeracion correlativa
                         k++;
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${k}', '${departamento.id_edificio}') `;
                         response=await pool.query(query)
@@ -83,26 +81,33 @@ export class DepartamentoService {
 
     }
 
-    getDepartamentoByCodigo = async (departamento) => {
-        await pool.connect()
-        console.log(departamento.codigo)
+    getDepartamentoByCodigo = async (codigo) => {
+        console.log('This is a function on the service');
+        console.log(codigo)
         let response
-        let query=`SELECT * from ${departamentoTabla} WHERE codigo='${departamento.codigo}'`
-        response=await pool.query(query)
+        const query=`SELECT * from ${departamentoTabla} WHERE codigo='${codigo}'`
+        await pool.connect()
+        response=await pool.query(query)//trae el departamento
         console.log(response.rows)
         return response.rows;
     }
 
     updateDepartamentoByCodigo = async (codigo, departamento) => {
         console.log('This is a function on the service');
-        await pool.connect()
-        let response;
         console.log(codigo)
-        let query=`UPDATE ${departamentoTabla} SET nombre = '${departamento.nombre}', apellido = '${departamento.apellido}', dni = '${departamento.dni}', telefono = '${departamento.telefono}' WHERE codigo = '${codigo}'`;
-        response=await pool.query(query)
-        console.log(response)
 
+        let response;
+        const query=`UPDATE ${departamentoTabla} SET nombre = '${departamento.nombre}', apellido = '${departamento.apellido}', dni = '${departamento.dni}', telefono = '${departamento.telefono}' WHERE codigo = '${codigo}'`;
+        const query2=`SELECT * from ${departamentoTabla}`
 
+        await pool.connect()
+        const departamentos = await pool.query(query2)//trae todos los departamentos
+        const result = departamentos.rows.filter(word => word.dni===departamento.dni || word.telefono===departamento.telefono);
+        if(result[0] !== undefined){//datos repetidos
+            return response
+        }
+
+        response=await pool.query(query)//sube los datos al departamento
         return response.rows;
     }
 
