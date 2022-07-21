@@ -9,7 +9,7 @@ const authService = new AuthService();
 const router = Router();
 const administradorService = new AdministradorService();
 
-
+{
 /**
  * @swagger
  *  tags:
@@ -40,12 +40,11 @@ const administradorService = new AdministradorService();
  *       500:
  *         description: Some server error
  */
+}
 
-
-router.post('', async(req, res) => {
-    console.log("what")
+router.post('', async(req, res) => { //create administrador
+    console.log(`This is a post operation`);
     try{
-        console.log(`This is a post operation`);
         console.log(req.body);
         const administrador = await administradorService.createAdministrador(req.body);
         if(administrador===undefined){
@@ -59,6 +58,7 @@ router.post('', async(req, res) => {
     }
 });
 
+{
 /**
  * @swagger
  * /administradores/logIn:
@@ -81,9 +81,9 @@ router.post('', async(req, res) => {
  *       500:
  *         description: Some server error
  */
+}
 
-
-router.post('/logIn', async(req, res) => {
+router.post('/logIn', async(req, res) => { //get administrador by mail y contraseña and create token
     console.log(`This is a post operation`);
     try {
         const administrador = await administradorService.getAdministrador(req.body);
@@ -100,14 +100,14 @@ router.post('/logIn', async(req, res) => {
     }
 });
 
-router.get('/:id', Authenticate, async(req, res) => {
+
+router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
     try{
         console.log(`This is a get operation`);
 
         const administrador = await administradorService.getAdministradorById(req.params.id);
         console.log(administrador[0])
         if (administrador[0] === undefined) {
-            console.log("tarda")
             return res.status(404).json("no se encontró administrador");
         } else {
             return res.status(201).json(administrador);

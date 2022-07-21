@@ -6,54 +6,39 @@ const adminTabla = process.env.DB_TABLA_ADMIN;
 export class AdministradorService {
 
     createAdministrador = async(administrador) => {
-        await pool.connect()
         console.log('This is a function on the service');
         let response
         const query = `INSERT INTO ${adminTabla} (nombre, apellido, mail, contraseña, telefono) VALUES ('${administrador.nombre}', '${administrador.apellido}',  '${administrador.mail}', '${administrador.contraseña}', '${administrador.telefono}') `;
         const query2 = `SELECT * from ${adminTabla}`
-        const administradores = await pool.query(query2)
-        const result = administradores.rows.filter(word => word.mail===administrador.mail || word.contraseña===administrador.contraseña);
+        await pool.connect()
+        const administradores = await pool.query(query2)//trae todo de administradores
+        const result = administradores.rows.filter(word => word.mail===administrador.mail || word.contraseña===administrador.contraseña || word.telefono===administrador.telefono);
         console.log(result[0])
-        if(result[0] !== undefined){
+        if(result[0] !== undefined){//datos repetidos
             return response
         }
-        response = await pool.query(query)
+        response = await pool.query(query)//crea un administrador
         console.log(response)
         
-
         return response.rowCount;
     }
 //hodaaaaaaaaa
     getAdministrador = async(administrador) => {
         console.log('This is a function on the service');
         let response = 0
+        const query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
         await pool.connect()
-        let query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
-        if (administrador.mail && administrador.contraseña) {
-            response = await pool.query(query)
-        } else {
-            response = 0
-        }
+        response = await pool.query(query)//trae el administrador
         console.log(response.rows)
         return response.rows;
     }
 
     getAdministradorById = async(id) => {
-        console.log('This is a function on the serviceeeeeeeeeeeeeee');
+        console.log('This is a function on the service');
         let response
-        let query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
+        const query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
         await pool.connect()
-            try{
-                if (id = !0) {
-                    response = await pool.query(query)
-                } else {
-                    response = 0
-                }
-            }catch(error){
-                console.log(error)
-            }
-
-
+        response = await pool.query(query)//trae administrador
         console.log(response.rows)
         return response.rows;
         }
