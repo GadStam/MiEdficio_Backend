@@ -11,7 +11,7 @@ export class AdministradorService {
         let response
         const query = `INSERT INTO ${adminTabla} (nombre, apellido, mail, contraseña, telefono) VALUES ('${administrador.nombre}', '${administrador.apellido}',  '${administrador.mail}', '${administrador.contraseña}', '${administrador.telefono}') `;
         const query2 = `SELECT * from ${adminTabla}`
-        administradores = await pool.query(query2)
+        const administradores = await pool.query(query2)
         const result = administradores.rows.filter(word => word.mail===administrador.mail || word.contraseña===administrador.contraseña);
         console.log(result[0])
         if(result[0] !== undefined){
