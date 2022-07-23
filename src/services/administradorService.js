@@ -7,6 +7,8 @@ export class AdministradorService {
 
     createAdministrador = async(administrador) => {
         console.log('This is a function on the service');
+        console.log('eeeee')
+        console.log(administrador)
         let response
         const query = `INSERT INTO ${adminTabla} (nombre, apellido, mail, contraseña, telefono) VALUES ('${administrador.nombre}', '${administrador.apellido}',  '${administrador.mail}', '${administrador.contraseña}', '${administrador.telefono}') `;
         const query2 = `SELECT * from ${adminTabla}`
