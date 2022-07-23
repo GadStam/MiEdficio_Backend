@@ -12,6 +12,7 @@ export class EdificioService {
         
         console.log('This is a function on the service');
         console.log(edificio.id_espaciocc[0])
+        console.log(edificio)
 
         let response
         let response2
