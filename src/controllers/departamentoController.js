@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import { DepartamentoService } from '../services/departamentoService.js';
 import { Authenticate } from '../common/jwt.strategy.js';
+import { AuthService } from '../services/authService.js';
 
+
+const authService = new AuthService();
 
 const router = Router();
 const departamentoService = new DepartamentoService();
