@@ -124,10 +124,12 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
         if(departamento[0]===undefined){
             return res.status(404).json("No se encontro departamento")
         }
+        console.log(departamento[0].id_departamento)
         const id = departamento[0].id_departamento
         const token = authService.getToken(id)
         return res.status(200).json({ token, id });
     }catch(error){
+        console.log(error)
         return res.status(500).json(error)
     }
 })
