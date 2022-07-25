@@ -41,6 +41,7 @@ const edificioService = new EdificioService();
 
 router.post('/:id', Authenticate, async(req, res) => { //create edificio by administrador
     console.log(`This is a post operation`);
+    console.log(req.body)
 
     try{
         const edificio = await edificioService.createEdificio(req.body, req.params.id);
