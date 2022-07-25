@@ -118,14 +118,15 @@ router.put('/:codigo', Authenticate, async (req, res) => { //update departamento
  */
 }
 
-router.get('/:codigo',Authenticate, async (req,res) => {//get departamento by codigo
+router.get('/:codigo', async (req,res) => {//get departamento by codigo
     try{
         const departamento = await departamentoService.getDepartamentoByCodigo(req.params.codigo)
-        console.log(departamento[0])
         if(departamento[0]===undefined){
             return res.status(404).json("No se encontro departamento")
         }
-        return res.status(201).json(departamento);
+        const id = departamento[0].id_departamento
+        const token = authService.getToken(id)
+        return res.status(200).json({ token, id });
     }catch(error){
         return res.status(500).json(error)
     }
