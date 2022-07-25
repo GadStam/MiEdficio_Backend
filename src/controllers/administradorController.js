@@ -45,7 +45,7 @@ const administradorService = new AdministradorService();
 router.post('', async(req, res) => { //create administrador
     console.log(`This is a post operation`);
     console.log('eeeee')
-    console.log(req.body)
+    console.log("lo que recibo", req.body)
     try{
         console.log(req.body);
         const administrador = await administradorService.createAdministrador(req.body);
