@@ -59,7 +59,7 @@ router.post('', async(req, res) => { //create administrador
         return res.status(500).json(error)
     }
 });
-//HODAAaaaaaaaaaaaaaaaaaaaaa
+//HODAAaaaaaaaaaaaaaaaaaaaaaa
 {
 /**
  * @swagger
