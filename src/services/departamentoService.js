@@ -83,9 +83,9 @@ export class DepartamentoService {
                             query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
                             response=await pool.query(query)
                         }else{
-                            k++
                             query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[k]}', '${departamento.id_edificio}') `
-                            response=await pool.query(query)                            
+                            response=await pool.query(query)     
+                            k++                       
                         }
                     }else if(departamento.correlativa==="false"){ //numeracion no correlativa
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${j+1}', '${departamento.id_edificio}') `;
