@@ -1,5 +1,6 @@
 import 'dotenv/config'
-import pool from '../../db.js';
+import pkg from 'pg';
+
 
 const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO;
 
@@ -32,7 +33,14 @@ export class DepartamentoService {
         let result
         const query2=`SELECT * from ${departamentoTabla}`
 
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         for(let i=0; i<departamento.cant_pisos; i++){ //repetidor por pisos
             if(departamento.automatico==="true"){ //automatico
                 for(let j=0;  j<departamento.departamentosXpiso; j++){ //repetidor por departamento
@@ -90,6 +98,7 @@ export class DepartamentoService {
                 }
             }
         }
+        pool.end()
 
     }
 
@@ -98,8 +107,16 @@ export class DepartamentoService {
         console.log(codigo)
         let response
         const query=`SELECT * from ${departamentoTabla} WHERE codigo='${codigo}'`
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         response=await pool.query(query)//trae el departamento
+        pool.end()
         console.log(response.rows)
         return response.rows;
     }
@@ -112,7 +129,14 @@ export class DepartamentoService {
         const query=`UPDATE ${departamentoTabla} SET nombre = '${departamento.nombre}', apellido = '${departamento.apellido}', dni = '${departamento.dni}', telefono = '${departamento.telefono}' WHERE codigo = '${codigo}'`;
         const query2=`SELECT * from ${departamentoTabla}`
 
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         const departamentos = await pool.query(query2)//trae todos los departamentos
         const result = departamentos.rows.filter(word => word.dni===departamento.dni || word.telefono===departamento.telefono);
         if(result[0] !== undefined){//datos repetidos
@@ -120,6 +144,7 @@ export class DepartamentoService {
         }
 
         response=await pool.query(query)//sube los datos al departamento
+        pool.end()
         return response.rows;
     }
 

@@ -1,5 +1,6 @@
 import 'dotenv/config'
-import pool from '../../db.js';
+import pkg from 'pg';
+
 
 const espacioTabla = process.env.DB_TABLA_ESPACIOS;
 
@@ -21,7 +22,14 @@ export class EspacioService {
         let response
         const query = `INSERT INTO ${espacioTabla} (tipo_espacio) VALUES ('${espacio.tipo_espacio}') `;
         const query2 = `SELECT * from ${espacioTabla}`
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         const espacios = await pool.query(query2)//trae todo de espacios
         const result = espacios.rows.filter(word => word.tipo_espacio===espacio.tipo_espacio);
         console.log(result[0])
@@ -29,6 +37,7 @@ export class EspacioService {
             return response
         }
         response = await pool.query(query)//crea un espacio
+        pool.end()
         console.log(response)
         
         return response.rowCount;

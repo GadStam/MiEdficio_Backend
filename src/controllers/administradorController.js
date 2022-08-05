@@ -41,7 +41,7 @@ const administradorService = new AdministradorService();
  *         description: Some server error
  */
 }
-/*
+
 router.post('', async(req, res) => { //create administrador
     console.log(`This is a post operation`);
     console.log('eeeee')
@@ -59,7 +59,7 @@ router.post('', async(req, res) => { //create administrador
         return res.status(500).json(error)
     }
 });
-*/
+
 {
 /**
  * @swagger
@@ -84,7 +84,7 @@ router.post('', async(req, res) => { //create administrador
  *         description: Some server error
  */
 }
-/*
+
 router.post('/logIn', async(req, res) => { //get administrador by mail y contraseña and create token
     console.log(`This is a post operation`);
     try {
@@ -101,7 +101,7 @@ router.post('/logIn', async(req, res) => { //get administrador by mail y contras
         return res.status(500).json(error)
     }
 });
-*/
+
 router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
     try{
         console.log(`This is a get operation`);

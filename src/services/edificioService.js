@@ -1,5 +1,6 @@
 import 'dotenv/config'
-import pool from '../../db.js';
+import pkg from 'pg';
+
 
 const edificioTabla = process.env.DB_TABLA_EDIFCIOS;
 const edificioXespacioTabla = process.env.DB_TABLA_EDIFICIOSXESPACIO;
@@ -22,7 +23,14 @@ export class EdificioService {
         const query3 = `SELECT MAX(id_edificio) as id_edificio from ${edificioTabla}`
         const query4= `SELECT * from ${edificioTabla}`
 
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         edificios= await pool.query(query4)//trae todos los edificios
         const result = edificios.rows.filter(word => word.cuit===edificio.cuit || word.clave_suterh===edificio.clave_suterh || word.direccion===edificio.direccion);
         console.log(result[0])
@@ -40,7 +48,8 @@ export class EdificioService {
                 response2 = await pool.query(query2)//crea relacion edificio espacio comun
             })
         }
-        return response3.rows;
+        pool.end()
+        return response3.rows
     }
 
     getEdificio = async(id) => {
@@ -48,8 +57,16 @@ export class EdificioService {
         let response
         const query = `SELECT * from ${edificioTabla} WHERE id_administrador='${id}'`;
 
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         response = await pool.query(query)//trae edificio by adminsistrador
+        pool.end()
         console.log(response.rows)
         return response.rows;
     }
