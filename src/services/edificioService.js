@@ -40,7 +40,7 @@ export class EdificioService {
                 response2 = await pool.query(query2)//crea relacion edificio espacio comun
             })
         }
-        return response.rows;
+        return response3.rows;
     }
 
     getEdificio = async(id) => {
