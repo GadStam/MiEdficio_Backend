@@ -9,10 +9,18 @@ export class EspacioService {
 
     getEspacios = async () => {
         console.log('This is a function on the service');
-        await pool.connect()
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
         let response
         const query=`SELECT * from ${espacioTabla}` 
         response=await pool.query(query)//trae espacios
+        pool.end()
         console.log(response)
         return response.rows;
     }
