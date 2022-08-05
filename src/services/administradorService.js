@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import pool from '../../db.js'
+//import pool from '../../db.js'
 const { Pool, Client } = require('pg')
 // pools will use environment variables
 // for connection information
