@@ -32,7 +32,6 @@ export class AdministradorService {
         await pool.connect()
         response = await pool.query(query)//trae el administrador
         console.log(response.rows)
-        await pool.end()
         return response.rows;
     }
 
@@ -43,6 +42,7 @@ export class AdministradorService {
         await pool.connect()
         response = await pool.query(query)//trae administrador
         console.log(response.rows)
+        await pool.end()
         return response.rows;
         }
     
