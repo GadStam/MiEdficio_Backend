@@ -114,6 +114,7 @@ router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
             return res.status(201).json(administrador);
         }
     }catch(error){
+        console.log(error)
         return res.status(501).json(error)
     }
 });

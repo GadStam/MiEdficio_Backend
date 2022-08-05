@@ -1,12 +1,17 @@
 import 'dotenv/config'
 //import pool from '../../db.js'
-const { Pool, Client } = require('pg')
-// pools will use environment variables
-// for connection information
+import pkg from 'pg';
 
-const pool = new Pool()
+const { Pool } = pkg;
 
-
+const pool = new Pool(
+    {
+        
+        connectionString:   process.env.DB_SERVER,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    })
 
 const adminTabla = process.env.DB_TABLA_ADMIN;
 
@@ -47,11 +52,9 @@ export class AdministradorService {
         console.log('This is a function on the service');
         let response
         const query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
-        await pool.connect()
-        pool.query(query, (err, res) => {
-            console.log(err, res)
-            pool.end()
-        })
+        response = await pool.query(query)
+        pool.end()
+        
         return response.rows;
         }
     
