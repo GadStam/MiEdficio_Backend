@@ -1,5 +1,5 @@
 import 'dotenv/config'
-//import pool from '../../db.js'
+import pool from '../../db.js'
 const { Pool, Client } = require('pg')
 // pools will use environment variables
 // for connection information
@@ -12,7 +12,7 @@ const adminTabla = process.env.DB_TABLA_ADMIN;
 
 export class AdministradorService {
 
-    /*createAdministrador = async(administrador) => {
+    createAdministrador = async(administrador) => {
         console.log('This is a function on the service');
         console.log('eeeee')
         console.log("lo que recibo",administrador)
@@ -40,7 +40,7 @@ export class AdministradorService {
         response = await pool.query(query)//trae el administrador
         console.log(response.rows)
         return response.rows;
-    }*/
+    }
 
     getAdministradorById = async(id) => {
         console.log('This is a function on the service');
