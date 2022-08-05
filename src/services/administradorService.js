@@ -40,9 +40,11 @@ export class AdministradorService {
         let response
         const query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
         await pool.connect()
-        response = await pool.query(query)//trae administrador
-        console.log(response.rows)
-        pool.end()
+        pool.query(query, async (err, res) => {
+            response = res.rows
+            console.log(res.rows);
+            pool.end()
+        }) // trae administrador
         return response.rows;
         }
     
