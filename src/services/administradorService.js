@@ -12,7 +12,7 @@ const adminTabla = process.env.DB_TABLA_ADMIN;
 
 export class AdministradorService {
 
-    createAdministrador = async(administrador) => {
+    /*createAdministrador = async(administrador) => {
         console.log('This is a function on the service');
         console.log('eeeee')
         console.log("lo que recibo",administrador)
@@ -41,6 +41,7 @@ export class AdministradorService {
         console.log(response.rows)
         return response.rows;
     }
+    */
 
     getAdministradorById = async(id) => {
         console.log('This is a function on the service');
