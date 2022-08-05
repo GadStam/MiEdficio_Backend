@@ -44,8 +44,14 @@ export class DepartamentoService {
                         console.log(result[0])
                     }while(result[0] !== undefined) //ya existe ese codigo
                     if(departamento.letra==="true"){ //numeracion por letra
-                        query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
-                        response=await pool.query(query)
+                        if(departamento.correlativa==="false"){
+                            query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
+                            response=await pool.query(query)
+                        }else{
+                            k++
+                            query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[k]}', '${departamento.id_edificio}') `
+                            response=await pool.query(query)
+                        }
                     }else if(departamento.correlativa==="false"){ //numeracion no correlativa
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${j+1}', '${departamento.id_edificio}') `;
                         response=await pool.query(query)
@@ -65,8 +71,14 @@ export class DepartamentoService {
                         console.log(result[0])
                     }while(result[0] !== undefined) //ya existe ese codigo
                     if(departamento.letra==="true"){ //numeracion por letra
-                        query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
-                        response=await pool.query(query)
+                        if(departamento.correlativa==="false"){
+                            query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${departamento.id_edificio}') `
+                            response=await pool.query(query)
+                        }else{
+                            k++
+                            query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[k]}', '${departamento.id_edificio}') `
+                            response=await pool.query(query)                            
+                        }
                     }else if(departamento.correlativa==="false"){ //numeracion no correlativa
                         query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}.${j+1}', '${departamento.id_edificio}') `;
                         response=await pool.query(query)
