@@ -42,6 +42,28 @@ router.get('/',  async(req, res) => {//trae espacios comunes
     }
 });
 
+/**
+ * @swagger
+ * /espacios:
+ *   post:
+ *     summary: Create a new espacio
+ *     tags: [Espacio]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       200:
+ *         description: The Espacio was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       500:
+ *         description: Some server error
+ */
 router.post('', async(req, res) => { //create espacio comun
     console.log(`This is a post operation`);
     try{

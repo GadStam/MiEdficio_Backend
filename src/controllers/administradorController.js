@@ -102,6 +102,26 @@ router.post('/logIn', async(req, res) => { //get administrador by mail y contras
     }
 });
 
+/**
+ * @swagger
+ * /administradores/{id}:
+ *   get:
+ *     summary: gets administrador by id
+ *     tags: [Administrador]
+ *     parameters:
+ *       - in : path
+ *         name: id
+ *         description: id of administrador
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Administrador by its Id
+ *       400:
+ *         description: Administrador can not be found
+ */
+
 router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
     try{
         console.log(`This is a get operation`);
