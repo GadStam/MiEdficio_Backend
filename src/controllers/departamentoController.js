@@ -41,10 +41,10 @@ const departamentoService = new DepartamentoService();
  */
 }
 
-router.post('', Authenticate, async (req, res) => { //create departamentos
+router.post('/:id', Authenticate, async (req, res) => { //create departamentos
     console.log(`This is a post operation`);
     try{
-        const departamento = await departamentoService.createDepartamento(req.body);
+        const departamento = await departamentoService.createDepartamento(req.params.id, req.body);
         return res.status(201).json(departamento);
     }catch(error){
         return res.status(500).json(error)
