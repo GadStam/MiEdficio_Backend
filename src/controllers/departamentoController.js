@@ -43,10 +43,21 @@ const departamentoService = new DepartamentoService();
 
 router.post('/:id', Authenticate, async (req, res) => { //create departamentos
     console.log(`This is a post operation`);
+    let deptos = []
+    let codigos = []
     try{
         const departamento = await departamentoService.createDepartamento(req.params.id, req.body);
-        return res.status(201).json(departamento);
+        console.log(departamento.deptos.length)
+        codigos=departamento.codigos
+        const cant_departamentos=departamento.deptos.length
+        for(let i=0; i<cant_departamentos; i++){
+            deptos.push(departamento.deptos[i].departamento)
+            console.log(departamento.deptos[i].departamento)
+        }
+            console.log("hola", deptos, codigos)
+        return res.status(201).json({deptos, codigos});
     }catch(error){
+        console.log(error)
         return res.status(500).json(error)
     }
 });
@@ -129,8 +140,9 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
         }
         console.log("el id", departamento[0].id_departamento)
         const id = departamento[0].id_departamento
+        const depto = departamento[0].departamento
         const token = authService.getToken(id)
-        return res.status(200).json({ token, id });
+        return res.status(200).json({ token, id, depto });
     }catch(error){
         console.log("el error", error)
         return res.status(500).json(error)

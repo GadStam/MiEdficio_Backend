@@ -25,13 +25,17 @@ export class DepartamentoService {
 
         //definiciones
         let codigo
+        let codigos = []
+        let deptos
         let query
         let k=0;
         let letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z", "0","1","2","3","4","5","6","7","8","9"]
         let response
         let response2
+        let response3 = []
         let result
         const query2=`SELECT * from ${departamentoTabla}`
+        const query4=`SELECT departamento from ${departamentoTabla} WHERE id_edificio=${id}`
 
         const { Pool } = pkg;
         const pool = new Pool(
@@ -51,6 +55,7 @@ export class DepartamentoService {
                         result = response2.rows.filter(word => word.codigo===codigo); //codigo repetidos
                         console.log(result[0])
                     }while(result[0] !== undefined) //ya existe ese codigo
+                    codigos.push(codigo)
                     if(departamento.letra==="true"){ //numeracion por letra
                         if(departamento.correlativa==="false"){
                             query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${id}') `
@@ -98,8 +103,11 @@ export class DepartamentoService {
                 }
             }
         }
-        pool.end()
+        response3 = await pool.query(query4)
+        deptos=response3.rows
 
+        pool.end()
+        return {codigos, deptos}
     }
 
     getDepartamentoByCodigo = async (codigo) => {
