@@ -64,7 +64,7 @@ router.get('/',  async(req, res) => {//trae espacios comunes
  *       500:
  *         description: Some server error
  */
-router.post('', async(req, res) => { //create espacio comun
+router.post('', Authenticate, async(req, res) => { //create espacio comun
     console.log(`This is a post operation`);
     try{
         console.log(req.body);
