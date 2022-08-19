@@ -19,7 +19,7 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
         }
     });
 
-    router.get('/:id',  async(req, res) => {//trae eventos por edificio
+    router.get('/:id', Authenticate, async(req, res) => {//trae eventos por edificio
         console.log(`This is a get operation`);
         try{
             const eventos = await eventoService.getEventosByEdificio(req.params.id);
@@ -29,7 +29,7 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
         }
     });
 
-    router.delete('/:id',  async(req, res) => {//trae eventos por edificio
+    router.delete('/:id',  Authenticate, async(req, res) => {//trae eventos por edificio
         console.log(`This is a delete operation`);
         try{
             const eventos = await eventoService.deleteEventos(req.params.id);
