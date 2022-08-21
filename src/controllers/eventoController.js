@@ -7,7 +7,7 @@ const eventoService = new EventoService()
 
 
 
-router.post('', Authenticate, async(req, res) => { //create espacio comun
+router.post('', Authenticate, async(req, res) => { //create evento
     console.log(`This is a post operation`);
     try{
             const evento = await eventoService.createEvento(req.body);
@@ -29,7 +29,7 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
         }
     });
 
-    router.delete('/:id',  Authenticate, async(req, res) => {//trae eventos por edificio
+    router.delete('/:id',  Authenticate, async(req, res) => {//borra evento
         console.log(`This is a delete operation`);
         try{
             const eventos = await eventoService.deleteEventos(req.params.id);

@@ -7,7 +7,7 @@ const expensaService = new ExpensaService()
 
 
 
-router.post('', Authenticate, async(req, res) => { //create espacio comun
+router.post('', Authenticate, async(req, res) => { //create expensa
     console.log(`This is a post operation`);
     try{
             const expensa = await expensaService.createExpensa(req.body);
@@ -19,7 +19,7 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
         }
     });
 
-router.get('/:id', Authenticate, async(req, res)=>{
+router.get('/:id', Authenticate, async(req, res)=>{ //get expensa by departamento
     console.log(`This is a get operation`)
     try{
         const expensa= await expensaService.getExpensaByDepartamento(req.params.id)
