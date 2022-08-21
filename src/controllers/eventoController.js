@@ -11,7 +11,11 @@ router.post('', Authenticate, async(req, res) => { //create evento
     console.log(`This is a post operation`);
     try{
             const evento = await eventoService.createEvento(req.body);
-            return res.status(201).json(evento);
+            if (evento===undefined){
+                return res.status(404).json("el espacio ya esta ocupado")
+            }else{
+                return res.status(201).json(evento);
+            }
         }
         catch (error) {
         console.log(error)

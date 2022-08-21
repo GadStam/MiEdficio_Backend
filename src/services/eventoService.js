@@ -11,8 +11,8 @@ export class EventoService {
         console.log('This is a function on the service');
         let response
         let response2
-        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio) VALUES ('${evento.fecha}', '${evento.hora_incio}', '${evento.hora_final}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}' ) `;
-        const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha=${evento.fecha}`
+        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio) VALUES ('${evento.fecha}', '${evento.hora_inicio}', '${evento.hora_final}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}' ) `;
+        const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${evento.fecha}'`
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -21,19 +21,22 @@ export class EventoService {
                     rejectUnauthorized: false
                 }
             })
-        response2 = await pool.query2(query2)
+            console.log(query2)
+            response2=await pool.query(query2)
+            console.log(response2.rows)
 
-        const even = (element) => (evento.fecha_inicio >= element.fecha_inicio && evento.fecha_inicio<=element.fecha_final) || (evento.fecha_final>=element.fecha_inicio && evento.fecha_final<=element.fecha_final);
+        const even = (element) => (evento.hora_inicio >= element.hora_inicio && evento.hora_inicio<element.hora_final) || (evento.hora_final>element.hora_inicio && evento.hora_final<=element.hora_final) || (evento.hora_inicio < element.hora_inicio && evento.hora_final> element.hora_final) ;
 
-        const sePisan=(response2.some(even));
+        const sePisan=(response2.rows.some(even));
         console.log(sePisan)
         if(sePisan===false){
+            console.log(query)
             response = await pool.query(query)//crea un espacio
             pool.end()
-            response.rowCount
+            return response.rowCount
         }else{
             pool.end()
-            return response.rowCount
+            return response
         }        
     }
 
@@ -52,7 +55,7 @@ export class EventoService {
         console.log(query)
         response=await pool.query(query)//trae espacios
         pool.end()
-        console.log(response)
+        console.log(response.rows)
         return response.rows;
     }
 

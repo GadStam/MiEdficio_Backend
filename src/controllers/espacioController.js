@@ -81,14 +81,4 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
 });
 
 
-
-
-
-router.get('/test', async(req, res) => {
-    console.log("holaaaaaaaaaaaaaaa")
-
-    return res.status(200).send("AGACHATE Y CONOCELO");
-});
-
-
 export default router;
