@@ -7,6 +7,7 @@ import EdificioRouter from "./src/controllers/edificioController.js";
 import DepartamentoRouter from "./src/controllers/departamentoController.js";
 import AdministradorRouter from "./src/controllers/administradorController.js";
 import EventoRouter from "./src/controllers/eventoController.js";
+import ExpensaRouter from "./src/controllers/expensaController"
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 
@@ -21,6 +22,7 @@ app.use("/edificios", EdificioRouter)
 app.use("/departamentos", DepartamentoRouter)
 app.use("/administradores", AdministradorRouter)
 app.use("/eventos", EventoRouter)
+app.use("/expensas", ExpensaRouter)
 
 const options = {
   definition: {

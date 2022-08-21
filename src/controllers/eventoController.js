@@ -10,8 +10,8 @@ const eventoService = new EventoService()
 router.post('', Authenticate, async(req, res) => { //create espacio comun
     console.log(`This is a post operation`);
     try{
-            const espacio = await eventoService.createEvento(req.body);
-            return res.status(201).json(espacio);
+            const evento = await eventoService.createEvento(req.body);
+            return res.status(201).json(evento);
         }
         catch (error) {
         console.log(error)
