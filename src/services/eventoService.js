@@ -61,6 +61,7 @@ export class EventoService {
 
     deleteEventos = async (id) => {
         console.log('This is a function on the service');
+        console.log(id)
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -70,7 +71,8 @@ export class EventoService {
                 }
             })
         let response
-        const query=`DELETE * from ${eventoTabla} where id_evento=${id}` 
+        const query=`DELETE from ${eventoTabla} where id_evento=${id}` 
+        console.log(query)
         response=await pool.query(query)//trae espacios
         pool.end()
         console.log(response)
