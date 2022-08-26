@@ -141,8 +141,9 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
         console.log("el id", departamento[0].id_departamento)
         const id = departamento[0].id_departamento
         const depto = departamento[0].departamento
+        const edificio = departamento[0].id_edificio
         const token = authService.getToken(id)
-        return res.status(200).json({ token, id, depto });
+        return res.status(200).json({ token, id, depto, edificio });
     }catch(error){
         console.log("el error", error)
         return res.status(500).json(error)
