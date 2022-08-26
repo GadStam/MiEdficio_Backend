@@ -11,7 +11,7 @@ export class EventoService {
         console.log('This is a function on the service');
         let response
         let response2
-        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, cant_invitados, id_departamento, id_espaciocomun, id_edificio) VALUES ('${evento.fecha}', '${evento.hora_inicio}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}' ) `;
+        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${evento.hora_inicio}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}' ) `;
         const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${evento.fecha}'`
         const { Pool } = pkg;
         const pool = new Pool(
