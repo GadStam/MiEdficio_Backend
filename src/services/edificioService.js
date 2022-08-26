@@ -15,6 +15,8 @@ export class EdificioService {
         console.log(edificio.id_espaciocc[0])
         console.log(edificio)
 
+        edificio.id_espaciocc.unshift(0)
+
         let response
         let response2
         let response3
@@ -35,6 +37,7 @@ export class EdificioService {
         const result = edificios.rows.filter(word => word.cuit===edificio.cuit || word.clave_suterh===edificio.clave_suterh || word.direccion===edificio.direccion);
         console.log(result[0])
         if(result[0] !== undefined){//datos repetidos
+            pool.end()
             return response
         }
         response = await pool.query(query)//crea nuevo edificio
@@ -45,10 +48,13 @@ export class EdificioService {
                 await pool.query("BEGIN");
                 edificio.id_espaciocc.forEach(async(espacio) => {
                     console.log('espacio', espacio)
-                    let query2 = `INSERT INTO ${edificioXespacioTabla} (id_espaciocc,id_edificio) values ('${espacio}', '${response3.rows[0].id_edificio}')`
-                    console.log(query2)
-                    const response4 = await pool.query(`Select * from ${edificioXespacioTabla}`)
-                    response2 = await pool.query(query2)//crea relacion edificio espacio comun
+                    if(espacio!==0){
+                        let query2 = `INSERT INTO ${edificioXespacioTabla} (id_espaciocc,id_edificio) values ('${espacio}', '${response3.rows[0].id_edificio}')`
+                        console.log(query2)
+                        response2 = await pool.query(query2)//crea relacion edificio espacio comun
+                    }else{
+                        const response4 = await pool.query(`Select * from ${edificioXespacioTabla}`)
+                    }
                 })
                 await pool.query ("COMMIT")
                 
@@ -57,7 +63,8 @@ export class EdificioService {
                 throw e;
             }
         }
-        await pool.end()
+        console.log("que")
+        pool.end()
         return response3.rows
     }
 
