@@ -41,14 +41,23 @@ export class EdificioService {
         response3 = await pool.query(query3)//trae su id
         console.log(response3.rows[0].id_edificio)
         if (edificio.id_espaciocc !== undefined) {//tiene espacios comunes
-            edificio.id_espaciocc.forEach(async(espacio) => {
-                console.log('espacio', espacio)
-                let query2 = `INSERT INTO ${edificioXespacioTabla} (id_espaciocc,id_edificio) values ('${espacio}', '${response3.rows[0].id_edificio}')`
-                console.log(query2)
-                response2 = await pool.query(query2)//crea relacion edificio espacio comun
-            })
+            try{
+                await pool.query("BEGIN");
+                edificio.id_espaciocc.forEach(async(espacio) => {
+                    console.log('espacio', espacio)
+                    let query2 = `INSERT INTO ${edificioXespacioTabla} (id_espaciocc,id_edificio) values ('${espacio}', '${response3.rows[0].id_edificio}')`
+                    console.log(query2)
+                    const response4 = await pool.query(`Select * from ${edificioXespacioTabla}`)
+                    response2 = await pool.query(query2)//crea relacion edificio espacio comun
+                })
+                await pool.query ("COMMIT")
+                
+            } catch (e) {
+                await pool.query("ROLLBACK");
+                throw e;
+            }
         }
-        pool.end()
+        await pool.end()
         return response3.rows
     }
 
