@@ -7,12 +7,30 @@ const eventoTabla = process.env.DB_TABLA_EVENTO;
 
 export class EventoService {
 
+
     createEvento = async(evento) => {
+
+        function addDaysToDate(date, days){
+            let res = new Date(date);
+            res.setDate(res.getDate() + days);
+            res = new Date(res).toISOString()
+            res=res.replace('T03:00:00.000Z','')
+            console.log(res)
+            return res;
+        }
+
         console.log('This is a function on the service');
         let response
         let response2
+        let response3
+        let nueva_fecha
 
-        let hora_final=evento.hora_inicio+evento.horas
+        let hora_inicio=parseInt(evento.hora_inicio)
+        let hora_final=hora_inicio+evento.horas
+        if(hora_final>=24){
+            hora_final=hora_final-24
+            nueva_fecha=addDaysToDate(evento.fecha, 1)
+        }
         console.log(hora_final)
 
         let hora_inicio_string=evento.hora_inicio+''
@@ -34,8 +52,14 @@ export class EventoService {
         }
         console.log(hora_final_string,hora_inicio_string)
 
+
         const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '${hora_final_string}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}') `;
         const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${evento.fecha}'`
+        const query3 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${nueva_fecha}'`
+        const query4 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '23:59:00', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}') `;
+        const query5 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${nueva_fecha}', '00:00:00', '${hora_final_string}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}') `;
+
+
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -44,6 +68,25 @@ export class EventoService {
                     rejectUnauthorized: false
                 }
             })
+            if(hora_inicio>hora_final){
+                response2=await pool.query(query2)
+                response3=await pool.query(query3)
+                const even = (element) => (hora_inicio_string >= element.hora_inicio && hora_inicio_string<element.hora_final) || ('23:59:00'>element.hora_inicio && '23:59:00'<=element.hora_final) || (hora_inicio_string < element.hora_inicio && '23:59:00'> element.hora_final) ;
+                const even2 = (element) => ('00:00:00' >= element.hora_inicio && '00:00:00'<element.hora_final) || (hora_final_string>element.hora_inicio && hora_final_string<=element.hora_final) || ('00:00:00' < element.hora_inicio && hora_final_string> element.hora_final) ;
+                const sePisan=(response2.rows.some(even));
+                const sePisan2=(response3.rows.some(even2));
+                if(sePisan===false && sePisan2===false){
+                    console.log(query)
+                    response = await pool.query(query4)//crea un espacio
+                    response = await pool.query(query5)
+                    pool.end()
+                    return response.rowCount
+                }else{
+                    pool.end()
+                    return response
+                }
+
+            }
             console.log(query2)
             response2=await pool.query(query2)
             console.log(response2.rows)
