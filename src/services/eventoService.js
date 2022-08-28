@@ -19,37 +19,77 @@ export class EventoService {
             return res;
         }
 
+        function round(num) {
+            var m = Number((Math.abs(num) * 100).toPrecision(15));
+            return Math.round(m) / 100 * Math.sign(num);
+        }
+
         console.log('This is a function on the service');
         let response
         let response2
         let response3
+        let esDigitoI=false
+        let esDigitoF=false
         let nueva_fecha
 
-        let hora_inicio=parseInt(evento.hora_inicio)
+        let hora_inicio=parseFloat(evento.hora_inicio)
         let hora_final=hora_inicio+evento.horas
+        if(hora_inicio<10){
+            esDigitoI=true
+        }
         if(hora_final>=24){
             hora_final=hora_final-24
             nueva_fecha=addDaysToDate(evento.fecha, 1)
+            console.log(hora_final)
+            hora_final=round(hora_final)
+            console.log("queeeeeee", hora_final)
         }
-        console.log(hora_final)
+        if(hora_final<10){
+            esDigitoF=true
+        }
 
         let hora_inicio_string=evento.hora_inicio+''
         let hora_final_string=hora_final + ''
         hora_final_string=hora_final_string.replace('.',':')
         hora_inicio_string=hora_inicio_string.replace('.',':')
-        if(hora_inicio_string.length===4){
-            hora_final_string=hora_final_string+'0:00'
-            hora_inicio_string=hora_inicio_string+'0:00'
-        }else if (hora_inicio_string.length===5){
-            hora_final_string=hora_final_string+':00'
-            hora_inicio_string=hora_inicio_string+':00'
-        }else if (hora_inicio_string.length===2){
-            hora_final_string=hora_final_string+':00:00'
-            hora_inicio_string=hora_inicio_string+':00:00'
-        }else if(hora_inicio_string.length===1){
-            hora_final_string='0'+hora_final_string+':00:00'
-            hora_inicio_string='0'+hora_inicio_string+':00:00'
+
+        if(esDigitoF===true){
+            if(hora_final_string.length===1){
+                hora_final_string='0'+hora_final_string+':00:00'
+            }else if(hora_final_string.length===3){
+                hora_final_string='0'+hora_final_string+'0:00'
+            }else if(hora_final_string.length===4){
+                hora_final_string='0'+hora_final_string+':00'
+            }
+        }else{
+            if(hora_final_string.length===2){
+                hora_final_string=hora_final_string+':00:00'
+            }else if(hora_final_string.length===4){
+                console.log("entro")
+                hora_final_string=hora_final_string+'0:00'
+                console.log(hora_final_string)
+            }else if(hora_final_string.length===5){
+                hora_final_string=hora_final_string+':00'
+            }
         }
+        if(esDigitoI===true){
+            if(hora_inicio_string.length===1){
+                hora_inicio_string='0'+hora_inicio_string+':00:00'
+            }else if(hora_inicio_string.length===3){
+                hora_inicio_string='0'+hora_inicio_string+'0:00'
+            }else if(hora_inicio_string.length===4){
+                hora_inicio_string='0'+hora_inicio_string+':00'
+            }
+        }else{
+            if(hora_inicio_string.length===2){
+                hora_inicio_string=hora_inicio_string+':00:00'
+            }else if(hora_inicio_string.length===4){
+                hora_inicio_string=hora_inicio_string+'0:00'
+            }else if(hora_inicio_string.length===5){
+                hora_inicio_string=hora_inicio_string+':00'
+            }
+        }
+
         console.log(hora_final_string,hora_inicio_string)
 
 
