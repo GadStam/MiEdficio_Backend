@@ -23,12 +23,18 @@ router.post('', Authenticate, async(req, res) => { //create evento
         }
     });
 
-    router.post('/:id', Authenticate, async(req, res) => {//trae eventos por edificio
+    router.get('/:id', Authenticate, async(req, res) => {//trae eventos por edificio
         console.log(`This is a post operation`);
         try{
-            const eventos = await eventoService.getEventosByEdificio(req.params.id, req.body.fecha);
-            return res.status(201).json(eventos);
+            const eventos = await eventoService.getEventosByEdificio(req.params.id);
+            console.log(eventos)
+            if (eventos[0]===undefined){
+                return res.status(404).json("No se encontro edificio")
+            }else{
+                return res.status(201).json(eventos);
+            }
         }catch(error){
+            console.log(error)
             return res.status(500).json(error)
         }
     });
@@ -37,8 +43,13 @@ router.post('', Authenticate, async(req, res) => { //create evento
         console.log(`This is a post operation`);
         try{
             const eventos = await eventoService.getEventosByDepartamento(req.params.id,);
-            return res.status(201).json(eventos);
+            if (eventos[0]===undefined){
+                return res.status(404).json("No se encontro edificio")
+            }else{
+                return res.status(201).json(eventos);
+            }
         }catch(error){
+            console.log(error)
             return res.status(500).json(error)
         }
     });
@@ -47,7 +58,11 @@ router.post('', Authenticate, async(req, res) => { //create evento
         console.log(`This is a delete operation`);
         try{
             const eventos = await eventoService.deleteEventos(req.params.id);
-            return res.status(201).json(eventos);
+            if(eventos="no encontro"){
+                return res.status(404).json("no se encontro")
+            }else{
+                return res.status(201).json(eventos)
+            }
         }catch(error){
             return res.status(500).json(error)
         }

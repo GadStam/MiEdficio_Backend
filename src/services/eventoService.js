@@ -10,6 +10,7 @@ export class EventoService {
 
     createEvento = async(evento) => {
 
+
         function addDaysToDate(date, days){
             let res = new Date(date);
             res.setDate(res.getDate() + days);
@@ -158,11 +159,22 @@ export class EventoService {
                 }
             })
         let response
-        const query=`SELECT * from ${eventoTabla} where id_edificio=${id} and fecha='${fecha}' order by fecha DESC` 
+        const query=`SELECT * from ${eventoTabla} where id_edificio=${id} order by fecha DESC` 
         console.log(query)
         response=await pool.query(query)//trae espacios
         pool.end()
         console.log(response.rows)
+        let date
+        for(let i=0;i<response.rows.length;i++){
+            console.log(response.rows[i].fecha)
+            let year=response.rows[i].fecha.getFullYear()+""
+            let month=response.rows[i].fecha.getMonth()+""
+            let day=response.rows[i].fecha.getDate()+""
+            console.log(year, month, day)
+            date=year+"-"+month+"-"+day
+            console.log(date)
+            response.rows[i].fecha=date
+        }
         return response.rows;
     }
 
@@ -183,6 +195,17 @@ export class EventoService {
             response=await pool.query(query)//trae espacios
             pool.end()
             console.log(response.rows)
+            let date
+            for(let i=0;i<response.rows.length;i++){
+                console.log(response.rows[i].fecha)
+                let year=response.rows[i].fecha.getFullYear()+""
+                let month=response.rows[i].fecha.getMonth()+""
+                let day=response.rows[i].fecha.getDate()+""
+                console.log(year, month, day)
+                date=year+"-"+month+"-"+day
+                console.log(date)
+                response.rows[i].fecha=date
+            }
             return response.rows;
     }
 
@@ -198,7 +221,13 @@ export class EventoService {
                 }
             })
         let response
+        let response2
+        const query2=`SELECT from ${eventoTabla} where id_evento=${id}` 
         const query=`DELETE from ${eventoTabla} where id_evento=${id}` 
+        response2=await pool.query(query2)
+        if(response2===undefined){
+            return "no encontro"
+        }
         console.log(query)
         response=await pool.query(query)//trae espacios
         pool.end()
