@@ -166,6 +166,26 @@ export class EventoService {
         return response.rows;
     }
 
+    getEventosByDepartamento = async (id) => {
+        console.log('This is a function on the service')
+        console.log(id)
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
+            let response
+            const query=`SELECT * from ${eventoTabla} where id_departamento=${id} order by fecha DESC` 
+            console.log(query)
+            response=await pool.query(query)//trae espacios
+            pool.end()
+            console.log(response.rows)
+            return response.rows;
+    }
+
     deleteEventos = async (id) => {
         console.log('This is a function on the service');
         console.log(id)
