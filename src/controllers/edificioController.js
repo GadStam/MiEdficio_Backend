@@ -60,7 +60,7 @@ router.post('/:id', Authenticate, async(req, res) => { //create edificio by admi
 {
 /**
  * @swagger
- * /edificios/edificios:
+ * /edificios/{id}:
  *   post:
  *     summary: gets edificio by its administrador
  *     tags: [Edificio]
@@ -86,6 +86,21 @@ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administ
         console.log(edificio[0])
         if (edificio[0] === undefined) {
             return res.status(404).json("no se encontro administrador");
+        } else {
+            return res.status(201).json(edificio);
+        }
+    }catch(error){
+        return res.status(500).json(error)
+    }
+});
+
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
+    console.log(`This is a get operation`);
+    try{
+        const edificio = await edificioService.getEdificioById(req.params.id);
+        console.log(edificio[0])
+        if (edificio[0] === undefined) {
+            return res.status(404).json("no se encontro edificio");
         } else {
             return res.status(201).json(edificio);
         }

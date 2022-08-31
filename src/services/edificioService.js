@@ -106,6 +106,25 @@ export class EdificioService {
         return response.rows;
     }
 
+    getEdificioById = async(id) => {
+        console.log('This is a function on the service');
+        let response
+        const query = `SELECT * from ${edificioTabla} WHERE id_edificio='${id}'`;
+
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
+        response = await pool.query(query)//trae edificio by adminsistrador
+        pool.end()
+        console.log(response.rows)
+        return response.rows;
+    }
+
 
     
 }

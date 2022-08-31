@@ -139,4 +139,21 @@ router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
     }
 });
 
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get administrador by id
+    try{
+        console.log(`This is a get operation`);
+
+        const administrador = await administradorService.getAdministradorByIdEdificio(req.params.id);
+        console.log(administrador[0])
+        if (administrador[0] === undefined) {
+            return res.status(404).json("no se encontró administrador");
+        } else {
+            return res.status(201).json(administrador);
+        }
+    }catch(error){
+        console.log(error)
+        return res.status(501).json(error)
+    }
+});
+
 export default router;

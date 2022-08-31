@@ -3,6 +3,8 @@ import pkg from 'pg';
 
 
 const adminTabla = process.env.DB_TABLA_ADMIN;
+const edificioTabla = process.env.DB_TABLA_EDIFCIOS;
+
 
 export class AdministradorService {
 
@@ -72,6 +74,30 @@ export class AdministradorService {
         return response.rows;
         }
     
+        getAdministradorByIdEdificio = async(id) => {
+            const { Pool } = pkg;
+    
+            const pool = new Pool(
+                {
+                    connectionString:   process.env.DB_SERVER,
+                    ssl: {
+                        rejectUnauthorized: false
+                    }
+                })
+            console.log('This is a function on the service');
+            let response
+            let response2
+            let id_administrador
+            const query = `SELECT id_administrador from ${edificioTabla} WHERE id_edificio='${id}'`;
+            const query2= `SELECT * from ${adminTabla} WHERE id_administrador'='${id_administrador}'`;
+            response = await pool.query(query)
+            id_administrador=response.rows[0].id_administrador
+            response2 = await pool.query(query2)
+            pool.end()
+            
+            return response2.rows;
+            }
+        
 
 
 }

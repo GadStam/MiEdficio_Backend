@@ -150,6 +150,25 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
     }
 })
 
+/**
+ * @swagger
+ * /departamentos/edificio{codigo}:
+ *   get:
+ *     summary: gets edificio by codigo departamento
+ *     tags: [Departamento]
+ *     parameters:
+ *       - in : path
+ *         name: id edificio
+ *         description: id edificio
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Edificio by its codigo departamento
+ *       400:
+ *         description: Departamento can not be found
+ */
 router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
     console.log(`This is a get operation`);
     try{

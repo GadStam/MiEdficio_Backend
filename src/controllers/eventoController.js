@@ -5,8 +5,35 @@ import { Authenticate } from '../common/jwt.strategy.js';
 const router = Router();
 const eventoService = new EventoService()
 
+/**
+ * @swagger
+ *  tags:
+ *    name: Evento
+ *    description: EndPoints de Evento
+ */
 
-
+/**
+ * @swagger
+ * /eventos:
+ *   post:
+ *     summary: Create a new evento
+ *     tags: [Evento]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'
+ *     responses:
+ *       200:
+ *         description: The Evento was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       500:
+ *         description: Some server error
+ */
 router.post('', Authenticate, async(req, res) => { //create evento
     console.log(`This is a post operation`);
     try{
@@ -23,6 +50,8 @@ router.post('', Authenticate, async(req, res) => { //create evento
         }
     });
 
+
+    
     router.get('/:id', Authenticate, async(req, res) => {//trae eventos por edificio
         console.log(`This is a post operation`);
         try{
