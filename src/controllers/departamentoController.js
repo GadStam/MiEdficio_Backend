@@ -150,4 +150,20 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
     }
 })
 
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
+    console.log(`This is a get operation`);
+    try{
+        const edificio = await edificioService.getEdificioByDepto(req.params.id);
+        console.log(edificio[0])
+        if (edificio[0] === undefined) {
+            return res.status(404).json("no se encontro edificio");
+        } else {
+            return res.status(201).json(edificio);
+        }
+    }catch(error){
+        return res.status(500).json(error)
+    }
+});
+
+
 export default router;
