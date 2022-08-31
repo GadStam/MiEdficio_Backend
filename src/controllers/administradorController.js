@@ -22,7 +22,7 @@ const administradorService = new AdministradorService();
  * @swagger
  * /administradores:
  *   post:
- *     summary: Create a new administrador
+ *     summary: Crea administrador
  *     tags: [Administrador]
  *     requestBody:
  *       required: true
@@ -65,7 +65,7 @@ router.post('', async(req, res) => { //create administrador
  * @swagger
  * /administradores/logIn:
  *   post:
- *     summary: Log in an Administrador
+ *     summary: Log in Administrador
  *     tags: [Administrador]
  *     requestBody:
  *       required: true
@@ -104,9 +104,9 @@ router.post('/logIn', async(req, res) => { //get administrador by mail y contras
 
 /**
  * @swagger
- * /administradores/{id}:
+ * /administradores/{id_administrador}:
  *   get:
- *     summary: gets administrador by id
+ *     summary: Trae administrador por su ID
  *     tags: [Administrador]
  *     parameters:
  *       - in : path
@@ -138,6 +138,27 @@ router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
         return res.status(501).json(error)
     }
 });
+
+
+/**
+ * @swagger
+ * /administradores/edificio/{id_edificio}:
+ *   get:
+ *     summary: Trae administrador por edificio
+ *     tags: [Administrador]
+ *     parameters:
+ *       - in : path
+ *         name: id
+ *         description: id of edificio
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Administrador by its Id edificio
+ *       400:
+ *         description: Administrador can not be found
+ */
 
 router.get('/edificio/:id', Authenticate, async(req, res) => { //get administrador by id
     try{

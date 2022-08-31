@@ -51,8 +51,26 @@ router.post('', Authenticate, async(req, res) => { //create evento
     });
 
 
-    
-    router.get('/:id', Authenticate, async(req, res) => {//trae eventos por edificio
+    /**
+ * @swagger
+ * /eventos/edificio/{id_edificio}}:
+ *   get:
+ *     summary: Trae eventos por edificio
+ *     tags: [Evento]
+ *     parameters:
+ *       - in : path
+ *         name: id_edificio
+ *         description: id_edificio
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: eventos
+ *       400:
+ *         description: edificio can not be found
+ */
+    router.get('edificio/:id', Authenticate, async(req, res) => {//trae eventos por edificio
         console.log(`This is a post operation`);
         try{
             const eventos = await eventoService.getEventosByEdificio(req.params.id);
@@ -68,12 +86,31 @@ router.post('', Authenticate, async(req, res) => { //create evento
         }
     });
 
-    router.get('/departamentos/:id', Authenticate, async(req, res) => {//trae eventos por edificio
+        /**
+ * @swagger
+ * /eventos/departamento/{codigo}}:
+ *   get:
+ *     summary: Trae eventos por codigo
+ *     tags: [Evento]
+ *     parameters:
+ *       - in : path
+ *         name: codigo
+ *         description: codigo de departanto
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: departamento
+ *       400:
+ *         description: departamento can not be found
+ */
+    router.get('/departamento/:id', Authenticate, async(req, res) => {//trae eventos por edificio
         console.log(`This is a post operation`);
         try{
             const eventos = await eventoService.getEventosByDepartamento(req.params.id,);
             if (eventos[0]===undefined){
-                return res.status(404).json("No se encontro edificio")
+                return res.status(404).json("No se encontro departamento")
             }else{
                 return res.status(201).json(eventos);
             }

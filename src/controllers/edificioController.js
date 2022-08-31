@@ -17,7 +17,7 @@ const edificioService = new EdificioService();
 {
 /**
  * @swagger
- * /edificios:
+ * /edificios/{id_administrador}:
  *   post:
  *     summary: Create a new edificio
  *     tags: [Edificio]
@@ -60,22 +60,22 @@ router.post('/:id', Authenticate, async(req, res) => { //create edificio by admi
 {
 /**
  * @swagger
- * /edificios/{id}:
- *   post:
- *     summary: gets edificio by its administrador
+ * /edifcios/{id_administrador}:
+ *   get:
+ *     summary: Trae edificio por id_administrador
  *     tags: [Edificio]
  *     parameters:
  *       - in : path
- *         name: mail and contraseña
- *         description: mail and contraseña of administrador
+ *         name: codigo
+ *         description: id_administrador
  *         schema:
  *           type: integer
  *         required: true
  *     responses:
  *       200:
- *         description: Edificio by its administrador
+ *         description: edificio
  *       400:
- *         description: Edificio can not be found
+ *         description: edificio can not be found
  */
 }
 
@@ -94,6 +94,26 @@ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administ
     }
 });
 
+
+/**
+ * @swagger
+ * /edifcios/edificio/{id_edificio}:
+ *   get:
+ *     summary: Trae edificio por id_edificio
+ *     tags: [Edificio]
+ *     parameters:
+ *       - in : path
+ *         name: codigo
+ *         description: id_edifcio
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: edificio
+ *       400:
+ *         description: edificio can not be found
+ */
 router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
     console.log(`This is a get operation`);
     try{
@@ -108,6 +128,8 @@ router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by
         return res.status(500).json(error)
     }
 });
+
+
 
 
 export default router;

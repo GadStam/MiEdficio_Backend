@@ -80,5 +80,83 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
     }
 });
 
+/**
+ * @swagger
+ * /espacios/edificio/{id_edificio}:
+ *   get:
+ *     summary: Trae espacios de un edificio
+ *     tags: [Espacio]
+ *     parameters:
+ *       - in : path
+ *         name: id_edificio
+ *         description: id_edifcio
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: espacios
+ *       400:
+ *         description: edificio can not be found
+ */
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
+    console.log(`This is a get operation`);
+    let espacios=[]
+    try{
+        const edificio = await espacioService.getEspaciosById_Edificio(req.params.id);
+        console.log(edificio[0])
+        if (edificio[0] === undefined) {
+            return res.status(404).json("no se encontro edificio");
+        } else {
+            console.log(edificio)
+            for(let i=0;i<edificio.length;i++){
+                console.log(edificio[i].id_espaciocc)
+                let response = await espacioService.getEspaciosById_EspacioCC(edificio[i].id_espaciocc);
+                console.log(response)
+                espacios.push(response)
+                console.log(espacios)
+            }
+            return res.status(201).json(espacios);
+        }
+    }catch(error){
+        console.log(error)
+        return res.status(500).json(error)
+    }
+});
+
+/**
+ * @swagger
+ * /espacios/{id_espaciocc}}:
+ *   get:
+ *     summary: Trae espacio por id
+ *     tags: [Espacio]
+ *     parameters:
+ *       - in : path
+ *         name: id_espaciocc
+ *         description: id_espaciocc
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: espacio
+ *       400:
+ *         description: edificio can not be found
+ */
+ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administrador
+    console.log(`This is a get operation`);
+    try{
+        const espacio = await espacioService.getEspaciosById_EspacioCC(req.params.id);       
+        if (espacio[0] === undefined) {
+            return res.status(404).json("no se encontro espacio");
+        } else {
+            return res.status(201).json(espacio);
+        }
+    }catch(error){
+        console.log(error)
+        return res.status(500).json(error)
+    }
+});
+
 
 export default router;

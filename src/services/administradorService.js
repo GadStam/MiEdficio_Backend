@@ -87,11 +87,15 @@ export class AdministradorService {
             console.log('This is a function on the service');
             let response
             let response2
-            let id_administrador
-            const query = `SELECT id_administrador from ${edificioTabla} WHERE id_edificio='${id}'`;
-            const query2= `SELECT * from ${adminTabla} WHERE id_administrador'='${id_administrador}'`;
+            let id_adm
+            const query = `SELECT id_administrador from ${edificioTabla} WHERE id_edificio=${id}`;
+            console.log(query)
             response = await pool.query(query)
-            id_administrador=response.rows[0].id_administrador
+            console.log(response.rows[0].id_administrador)
+            id_adm=response.rows[0].id_administrador
+            let query2= `SELECT * from ${adminTabla} WHERE ${id_adm}=id_administrador`;
+            console.log("que",id_adm)
+            console.log(query2)
             response2 = await pool.query(query2)
             pool.end()
             

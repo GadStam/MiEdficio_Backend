@@ -21,7 +21,7 @@ const departamentoService = new DepartamentoService();
  * @swagger
  * /departamentos:
  *   post:
- *     summary: Create a new departamento
+ *     summary: Crea departamentos
  *     tags: [Departamento]
  *     requestBody:
  *       required: true
@@ -31,7 +31,7 @@ const departamentoService = new DepartamentoService();
  *             $ref: '#/components/schemas/Post'
  *     responses:
  *       200:
- *         description: The departamento was successfully created
+ *         description: Los departamentos fueron creados exitosamente
  *         content:
  *           application/json:
  *             schema:
@@ -67,7 +67,7 @@ router.post('/:id', Authenticate, async (req, res) => { //create departamentos
  * @swagger
  * /departamentos/{codigo}:
  *   put:
- *     summary: updates departamento by codigo
+ *     summary: actualiza departamentos por codigo
  *     tags: [Departamento]
  *     parameters:
  *       - in: path
@@ -115,7 +115,7 @@ router.put('/:codigo', Authenticate, async (req, res) => { //update departamento
  * @swagger
  * /departamentos/{codigo}:
  *   get:
- *     summary: gets departamento by codigo
+ *     summary: Trae departamento por codigo
  *     tags: [Departamento]
  *     parameters:
  *       - in : path
@@ -172,7 +172,7 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
 router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
     console.log(`This is a get operation`);
     try{
-        const edificio = await edificioService.getEdificioByDepto(req.params.id);
+        const edificio = await departamentoService.getEdificio(req.params.id);
         console.log(edificio[0])
         if (edificio[0] === undefined) {
             return res.status(404).json("no se encontro edificio");

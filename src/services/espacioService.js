@@ -3,6 +3,7 @@ import pkg from 'pg';
 
 
 const espacioTabla = process.env.DB_TABLA_ESPACIOS;
+const edificioXespacioTabla = process.env.DB_TABLA_EDIFICIOSXESPACIO;
 
 
 export class EspacioService {
@@ -51,4 +52,43 @@ export class EspacioService {
         return response.rowCount;
     }
 
+    getEspaciosById_Edificio = async(id) => {
+        console.log('This is a function on the service');
+        let response
+        let response2
+        let espacio
+        let espacios=[]
+        const query = `SELECT id_espaciocc from ${edificioXespacioTabla} WHERE id_edificio='${id}'`;
+        const query2= `SELECT espaciocomun from ${espacioTabla} where id_espaciocc='${espacio}`
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
+        response = await pool.query(query)//trae edificio by adminsistrador
+        pool.end()
+        console.log(response.rows)
+        return response.rows;
+    }
+
+    getEspaciosById_EspacioCC=async(id) => {
+        console.log('This is a function on the service', id);
+        let response
+        const query= `SELECT tipo_espacio from ${espacioTabla} where id_espaciocc=${id}`
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
+        response = await pool.query(query)//trae edificio by adminsistrador
+        pool.end()
+        console.log(response.rows)
+        return response.rows;
+    }
 }
