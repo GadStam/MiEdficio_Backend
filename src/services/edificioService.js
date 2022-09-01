@@ -24,6 +24,7 @@ export class EdificioService {
         const query = `INSERT INTO ${edificioTabla} (direccion, año_construccion, cuit, clave_suterh, id_administrador, nro_encargado, nro_emergencia) VALUES ('${edificio.direccion}', '${edificio.año_construccion}', '${edificio.cuit}', '${edificio.clave_suterh}', '${id}', '${edificio.nro_encargado}', '${edificio.nro_emergencia}') `;
         const query3 = `SELECT MAX(id_edificio) as id_edificio from ${edificioTabla}`
         const query4= `SELECT * from ${edificioTabla}`
+        const query5 = `SELECT * from ${adminTabla} where id_administrador=${id}`
 
         const { Pool } = pkg;
         const pool = new Pool(
@@ -33,6 +34,12 @@ export class EdificioService {
                     rejectUnauthorized: false
                 }
             })
+            console.log(query5)
+        let response5=await pool.query(query5)
+        console.log("dou",response5.rows[0])
+        if(response5.rows[0]===undefined){
+            return "error"
+        }
         edificios= await pool.query(query4)//trae todos los edificios
         const result = edificios.rows.filter(word => word.cuit===edificio.cuit || word.clave_suterh===edificio.clave_suterh || word.direccion===edificio.direccion);
         console.log(result[0])
@@ -66,25 +73,6 @@ export class EdificioService {
         console.log("que")
         pool.end()
         return response3.rows
-    }
-
-    getEdificio = async(id) => {
-        console.log('This is a function on the service');
-        let response
-        const query = `SELECT * from ${edificioTabla} WHERE id_administrador='${id}'`;
-
-        const { Pool } = pkg;
-        const pool = new Pool(
-            {
-                connectionString:   process.env.DB_SERVER,
-                ssl: {
-                    rejectUnauthorized: false
-                }
-            })
-        response = await pool.query(query)//trae edificio by adminsistrador
-        pool.end()
-        console.log(response.rows)
-        return response.rows;
     }
 
     getEdificio = async(id) => {

@@ -29,11 +29,15 @@ const edificioService = new EdificioService();
  *             $ref: '#/components/schemas/Post'
  *     responses:
  *       200:
- *         description: The Edificio was successfully created
+ *         description: Id edificio [{id_edificio}]
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Post'
+ *       403:
+ *          description: No se encontró administrador
+ *       404:
+ *          description: Datos repetidos
  *       500:
  *         description: Some server error
  */
@@ -46,6 +50,9 @@ router.post('/:id', Authenticate, async(req, res) => { //create edificio by admi
     try{
         const edificio = await edificioService.createEdificio(req.body, req.params.id);
         console.log(edificio)
+        if(edificio==="error"){
+            return res.status(403).json("No se encontró administrador")
+        }
         if(edificio===undefined){
             return res.status(404).json("datos repetidos")
         }else{
@@ -73,9 +80,9 @@ router.post('/:id', Authenticate, async(req, res) => { //create edificio by admi
  *         required: true
  *     responses:
  *       200:
- *         description: edificio
- *       400:
- *         description: edificio can not be found
+ *         description: [{edificios}]
+ *       404:
+ *         description: no se encontraron edificios 
  */
 }
 
@@ -85,7 +92,7 @@ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administ
         const edificio = await edificioService.getEdificio(req.params.id);
         console.log(edificio[0])
         if (edificio[0] === undefined) {
-            return res.status(404).json("no se encontro administrador");
+            return res.status(404).json("no se encontraron edificios");
         } else {
             return res.status(201).json(edificio);
         }
@@ -110,7 +117,7 @@ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administ
  *         required: true
  *     responses:
  *       200:
- *         description: edificio
+ *         description: [{edificio}]
  *       400:
  *         description: edificio can not be found
  */

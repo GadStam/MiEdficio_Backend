@@ -37,6 +37,8 @@ const administradorService = new AdministradorService();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Post'
+ *       404:
+ *          description:Datos repetidos
  *       500:
  *         description: Some server error
  */
@@ -75,11 +77,13 @@ router.post('', async(req, res) => { //create administrador
  *             $ref: '#/components/schemas/Post'
  *     responses:
  *       200:
- *         description: The administrador was successfully created
+ *         description: Objeto con token and id_administrador
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Post'
+ *       404:
+ *          description: Error en loguearse
  *       500:
  *         description: Some server error
  */
@@ -117,9 +121,9 @@ router.post('/logIn', async(req, res) => { //get administrador by mail y contras
  *         required: true
  *     responses:
  *       200:
- *         description: Administrador by its Id
- *       400:
- *         description: Administrador can not be found
+ *         description: Administrador by its Id (Array con un solo objeto)
+ *       404:
+ *         description: No se encontró el administrador
  */
 
 router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
@@ -155,9 +159,9 @@ router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
  *         required: true
  *     responses:
  *       200:
- *         description: Administrador by its Id edificio
- *       400:
- *         description: Administrador can not be found
+ *         description: Administrador by its Id edificio (Array con un solo objeto)
+ *       404:
+ *         description: Edificio can not be found
  */
 
 router.get('/edificio/:id', Authenticate, async(req, res) => { //get administrador by id
@@ -167,7 +171,7 @@ router.get('/edificio/:id', Authenticate, async(req, res) => { //get administrad
         const administrador = await administradorService.getAdministradorByIdEdificio(req.params.id);
         console.log(administrador[0])
         if (administrador[0] === undefined) {
-            return res.status(404).json("no se encontró administrador");
+            return res.status(404).json("no se encontró edificio");
         } else {
             return res.status(201).json(administrador);
         }

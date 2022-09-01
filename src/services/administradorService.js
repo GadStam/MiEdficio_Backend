@@ -91,6 +91,10 @@ export class AdministradorService {
             const query = `SELECT id_administrador from ${edificioTabla} WHERE id_edificio=${id}`;
             console.log(query)
             response = await pool.query(query)
+            console.log(response.rows[0])
+            if(response.rows[0]===undefined){
+                return response
+            }
             console.log(response.rows[0].id_administrador)
             id_adm=response.rows[0].id_administrador
             let query2= `SELECT * from ${adminTabla} WHERE ${id_adm}=id_administrador`;
