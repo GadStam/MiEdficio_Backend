@@ -3,14 +3,15 @@ import pkg from 'pg';
 
 
 const expensaTabla = process.env.DB_TABLA_EXPENSA;
-
+const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO
 
 export class ExpensaService {
 
     createExpensa = async(expensa) => {
         console.log('This is a function on the service');
         let response
-        const query = `INSERT INTO ${expensaTabla} (id_departamento, monto, fecha_vencimiento, pdf_expensa, mes) VALUES ('${expensa.id_departamento}', '${expensa.monto}', '${expensa.fecha_vencimiento}', '${expensa.pdf_expensa}', '${expensa.mes}') `;
+        let response2
+        const query2= `SELECT id_departamento from ${departamentoTabla} WHERE codigo='${expensa.codigo}'`
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -19,6 +20,10 @@ export class ExpensaService {
                     rejectUnauthorized: false
                 }
             })
+            console.log(query2)
+        response2 = await pool.query(query2)
+        console.log("what", response2.rows[0].id_departamento)
+        const query = `INSERT INTO ${expensaTabla} (id_departamento, monto, fecha_vencimiento, pdf_expensa) VALUES ('${response2.rows[0].id_departamento}', '${expensa.monto}', '${expensa.fecha_vencimiento}', '${expensa.pdf_expensa}') `;
         response = await pool.query(query)//crea un espacio
         pool.end()
         console.log(response)
@@ -28,7 +33,9 @@ export class ExpensaService {
 
     getExpensaByDepartamento = async(id) => {
         let response
-        const query=`SELECT * from ${expensaTabla} WHERE id_departamento='${id}'`
+        let response2
+        let date
+        const query2= `SELECT id_departamento from ${departamentoTabla} WHERE codigo='${id}'`
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -37,7 +44,25 @@ export class ExpensaService {
                     rejectUnauthorized: false
                 }
             })
-        response=await pool.query(query)
+            response2 = await pool.query(query2)
+            const query=`SELECT * from ${expensaTabla} WHERE id_departamento=${response2.rows[0].id_departamento} ORDER BY fecha_vencimiento DESC`
+            console.log(query)
+
+            response=await pool.query(query)
+            console.log("why",response.rows)
+            for(let i=0;i<response.rows.length;i++){
+                console.log(response.rows[i].fecha_vencimiento)
+                let year=response.rows[i].fecha_vencimiento.getFullYear()+""
+                let month=response.rows[i].fecha_vencimiento.getMonth()+""
+                let day=response.rows[i].fecha_vencimiento.getDate()+""
+                console.log(year, month, day)
+                date=year+"-"+month+"-"+day
+                console.log(date)
+                response.rows[i].fecha_vencimiento=date
+                response.rows[i].id_expensa=parseInt(response.rows[i].id_expensa)
+                response.rows[i].id_departamento=parseInt(response.rows[i].id_departamento)
+                response.rows[i].monto=parseInt(response.rows[i].monto)               
+            } 
         pool.end()
         console.log(response.rows)
         return response.rows;

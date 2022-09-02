@@ -86,7 +86,7 @@ router.post('', Authenticate, async(req, res) => { //create evento
         }
     });
 
-        /**
+/**
  * @swagger
  * /eventos/departamento/{codigo}}:
  *   get:
