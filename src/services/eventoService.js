@@ -4,6 +4,7 @@ import pkg from 'pg';
 
 const eventoTabla = process.env.DB_TABLA_EVENTO;
 const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO
+const edificioTabla = process.env.DB_TABLA_EDIFCIOS;
 
 
 export class EventoService {
@@ -11,6 +12,14 @@ export class EventoService {
 
     createEvento = async(evento) => {
 
+        const { Pool } = pkg;
+        const pool = new Pool(
+            {
+                connectionString:   process.env.DB_SERVER,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            })
 
         function addDaysToDate(date, days){
             let res = new Date(date);
@@ -94,22 +103,18 @@ export class EventoService {
 
         console.log(hora_final_string,hora_inicio_string)
 
+        const query6 = `SELECT id_edificio from ${edificioTabla} where direccion='${evento.direccion}'`
+        console.log(query6)
+        let response6=await pool.query(query6)
+        console.log(response6.rows[0])
+        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '${hora_final_string}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}') `;
+        const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${response6.rows[0].id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${evento.fecha}'`
+        const query3 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${response6.rows[0].id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${nueva_fecha}'`
+        const query4 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '23:59:00', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}') `;
+        const query5 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${nueva_fecha}', '00:00:00', '${hora_final_string}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}') `;
+        
 
-        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '${hora_final_string}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}') `;
-        const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${evento.fecha}'`
-        const query3 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${evento.id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${nueva_fecha}'`
-        const query4 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '23:59:00', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}') `;
-        const query5 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${nueva_fecha}', '00:00:00', '${hora_final_string}', '${evento.cant_invitados}', '${evento.id_departamento}', '${evento.id_espaciocomun}', '${evento.id_edificio}', '${evento.horas}') `;
-
-
-        const { Pool } = pkg;
-        const pool = new Pool(
-            {
-                connectionString:   process.env.DB_SERVER,
-                ssl: {
-                    rejectUnauthorized: false
-                }
-            })
+ 
             if(hora_inicio>hora_final){
                 response2=await pool.query(query2)
                 response3=await pool.query(query3)
