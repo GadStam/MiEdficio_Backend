@@ -7,11 +7,11 @@ const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO
 
 export class ExpensaService {
 
-    createExpensa = async(pdf, codigo) => {
+    createExpensa = async(pdf) => {
         console.log('This is a function on the service');
         let response
-        let response2
-        const query2= `SELECT id_departamento from ${departamentoTabla} WHERE codigo='${codigo}'`
+        //let response2
+        //const query2= `SELECT id_departamento from ${departamentoTabla} WHERE codigo='${codigo}'`
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -21,9 +21,9 @@ export class ExpensaService {
                 }
             })
             console.log(query2)
-        response2 = await pool.query(query2)
-        console.log("what", response2.rows[0].id_departamento)
-        const query = `INSERT INTO ${expensaTabla} (id_departamento, pdf_expensa) VALUES ('${response2.rows[0].id_departamento}', '${pdf}') `;
+        //response2 = await pool.query(query2)
+        //console.log("what", response2.rows[0].id_departamento)
+        const query = `INSERT INTO ${expensaTabla} ( pdf_expensa) VALUES ('${pdf}') `;
         response = await pool.query(query)//crea un espacio
         pool.end()
         console.log(response)
