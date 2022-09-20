@@ -35,10 +35,10 @@ const expensaService = new ExpensaService()
  *       500:
  *         description: Some server error
  */
-router.post('', Authenticate, async(req, res) => { //create expensa
+router.post('/:codigo', Authenticate, async(req, res) => { //create expensa
     console.log(`This is a post operation`);
     try{
-            const expensa = await expensaService.createExpensa(req.body);
+            const expensa = await expensaService.createExpensa(req.body.pdf_expensa, req.params.codigo);
             return res.status(201).json(expensa);
         }
         catch (error) {
