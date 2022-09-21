@@ -103,7 +103,7 @@ export class EventoService {
 
         console.log(hora_final_string,hora_inicio_string)
 
-        const query7 = `SELECT id_departamento from ${edificioTabla} where departamento='${evento.depto}'`
+        const query7 = `SELECT id_departamento from ${departamentoTabla} where departamento='${evento.depto}'`
         let response7 = await pool.query(query7)
         const query6 = `SELECT id_edificio from ${edificioTabla} where direccion='${evento.direccion}'`
         console.log(query6)
