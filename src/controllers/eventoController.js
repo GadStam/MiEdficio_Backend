@@ -124,12 +124,14 @@ router.post('', Authenticate, async(req, res) => { //create evento
         console.log(`This is a delete operation`);
         try{
             const eventos = await eventoService.deleteEventos(req.params.id);
-            if(eventos="no encontro"){
+            if(eventos==="no encontro"){
                 return res.status(404).json("no se encontro")
             }else{
+                console.log("entro")
                 return res.status(201).json(eventos)
             }
         }catch(error){
+            console.log(error)
             return res.status(500).json(error)
         }
     });
