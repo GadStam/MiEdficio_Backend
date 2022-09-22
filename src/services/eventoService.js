@@ -109,11 +109,11 @@ export class EventoService {
         console.log(query6)
         let response6=await pool.query(query6)
         console.log(response6.rows[0])
-        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '${hora_final_string}', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}') `;
+        const query = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas, nombre_evento) VALUES ('${evento.fecha}', '${hora_inicio_string}', '${hora_final_string}', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}', '${evento.nombre_evento}') `;
         const query2 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${response6.rows[0].id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${evento.fecha}'`
         const query3 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${response6.rows[0].id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${nueva_fecha}'`
-        const query4 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${evento.fecha}', '${hora_inicio_string}', '23:59:00', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}') `;
-        const query5 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas) VALUES ('${nueva_fecha}', '00:00:00', '${hora_final_string}', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}') `;
+        const query4 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas, nombre_evento) VALUES ('${evento.fecha}', '${hora_inicio_string}', '23:59:00', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}', '${evento.nombre_evento}') `;
+        const query5 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas, nombre_evento) VALUES ('${nueva_fecha}', '00:00:00', '${hora_final_string}', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}', '${evento.nombre_evento}') `;
         
 
 
