@@ -200,8 +200,14 @@ export class EventoService {
                 }
             })
             let response
+            let response2
             let depto
-            let query=`SELECT * from ${eventoTabla} where id_departamento=${id} order by fecha DESC` 
+            const query2=`SELECT id_departamento from ${departamentoTabla} where codigo='${id}'`
+            console.log(query2)
+            response2=await pool.query(query2)
+            depto=response2.rows[0].id_departamento
+            let query=`SELECT * from ${eventoTabla} where id_departamento=${depto} order by fecha DESC` 
+            console.log("es",depto)
             console.log(query)
             response=await pool.query(query)//trae espacios
             pool.end()
