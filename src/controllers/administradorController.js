@@ -46,10 +46,7 @@ const administradorService = new AdministradorService();
 
 router.post('', async(req, res) => { //create administrador
     console.log(`This is a post operation`);
-    console.log('eeeee')
-    console.log("lo que recibo", req.body)
     try{
-        console.log(req.body);
         const administrador = await administradorService.createAdministrador(req.body);
         if(administrador===undefined){
             return res.status(404).json("datos repetidos")
@@ -127,11 +124,9 @@ router.post('/logIn', async(req, res) => { //get administrador by mail y contras
  */
 
 router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
+    console.log(`This is a get operation`);
     try{
-        console.log(`This is a get operation`);
-
         const administrador = await administradorService.getAdministradorById(req.params.id);
-        console.log(administrador[0])
         if (administrador[0] === undefined) {
             return res.status(404).json("no se encontró administrador");
         } else {
@@ -164,12 +159,10 @@ router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
  *         description: Edificio can not be found
  */
 
-router.get('/edificio/:id', Authenticate, async(req, res) => { //get administrador by id
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get administrador by edificio
+    console.log(`This is a get operation`);
     try{
-        console.log(`This is a get operation`);
-
         const administrador = await administradorService.getAdministradorByIdEdificio(req.params.id);
-        console.log(administrador[0])
         if (administrador[0] === undefined) {
             return res.status(404).json("no se encontró edificio");
         } else {
