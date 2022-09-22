@@ -114,7 +114,7 @@ export class EventoService {
         const query3 = `SELECT hora_inicio, hora_final from ${eventoTabla} where id_edificio=${response6.rows[0].id_edificio} and id_espaciocomun=${evento.id_espaciocomun} and fecha='${nueva_fecha}'`
         const query4 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas, nombre_evento) VALUES ('${evento.fecha}', '${hora_inicio_string}', '23:59:00', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}', '${evento.nombre_evento}') `;
         const query5 = `INSERT INTO ${eventoTabla} (fecha, hora_inicio, hora_final, cant_invitados, id_departamento, id_espaciocomun, id_edificio, horas, nombre_evento) VALUES ('${nueva_fecha}', '00:00:00', '${hora_final_string}', '${evento.cant_invitados}', '${response7.rows[0].id_departamento}', '${evento.id_espaciocomun}', '${response6.rows[0].id_edificio}', '${evento.horas}', '${evento.nombre_evento}') `;
-        
+        const query8 = `SElECT MAX(id_evento) as id_evento from ${eventoTabla}`
 
 
             if(hora_inicio>hora_final){
@@ -128,8 +128,9 @@ export class EventoService {
                     console.log(query)
                     response = await pool.query(query4)//crea un espacio
                     response = await pool.query(query5)
+                    let response8= await pool.query(query8)
                     pool.end()
-                    return response.rowCount
+                    return response8.rows[0]
                 }else{
                     pool.end()
                     return response
@@ -147,8 +148,9 @@ export class EventoService {
         if(sePisan===false){
             console.log(query)
             response = await pool.query(query)//crea un espacio
+            let response8= await pool.query(query8)
             pool.end()
-            return response.rowCount
+            return response8.rows[0]
         }else{
             pool.end()
             return response
