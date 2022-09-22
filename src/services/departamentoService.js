@@ -31,7 +31,7 @@ export class DepartamentoService {
         let k=0;
         let letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z", "0","1","2","3","4","5","6","7","8","9"]
         let response
-        let response2
+        let departamentos
         let response3 = []
         let result
         const query2=`SELECT * from ${departamentoTabla}`
@@ -45,15 +45,18 @@ export class DepartamentoService {
                     rejectUnauthorized: false
                 }
             })
+
+        departamentos=await pool.query(query4)
+        if(departamentos.rows[0]===undefined){
+            return departamentos.rows
+        }
         for(let i=0; i<departamento.cant_pisos; i++){ //repetidor por pisos
             if(departamento.automatico==="true"){ //automatico
                 for(let j=0;  j<departamento.departamentosXpiso; j++){ //repetidor por departamento
                     do { 
                         codigo=generateCode() //genera un codigo 
-                        console.log(codigo) 
-                        response2=await pool.query(query2) //trae todos los departamentos
-                        result = response2.rows.filter(word => word.codigo===codigo); //codigo repetidos
-                        console.log(result[0])
+                        departamentos=await pool.query(query2) //trae todos los departamentos
+                        result = departamentos.rows.filter(word => word.codigo===codigo); //codigo repetidos
                     }while(result[0] !== undefined) //ya existe ese codigo
                     codigos.push(codigo)
                     if(departamento.letra==="true"){ //numeracion por letra
@@ -78,11 +81,10 @@ export class DepartamentoService {
                 for(let j=0; j<departamento.departamentosXpiso[i]; j++){ //repetidor por departamento
                     do {
                         codigo=generateCode() //crea un codigo
-                        console.log(codigo)
-                        response2=await pool.query(query2) //trae departamentos 
-                        result = response2.rows.filter(word => word.codigo===codigo); //codigos repetidos
-                        console.log(result[0])
+                        departamentos=await pool.query(query2) //trae departamentos 
+                        result = departamentos.rows.filter(word => word.codigo===codigo); //codigos repetidos
                     }while(result[0] !== undefined) //ya existe ese codigo
+                    codigos.push(codigo)
                     if(departamento.letra==="true"){ //numeracion por letra
                         if(departamento.correlativa==="false"){
                             query=`INSERT INTO ${departamentoTabla} (codigo, departamento, id_edificio) VALUES ('${codigo}', '${i+1}${letras[j]}', '${id}') `
@@ -105,15 +107,13 @@ export class DepartamentoService {
         }
         response3 = await pool.query(query4)
         deptos=response3.rows
-
         pool.end()
         return {codigos, deptos}
     }
 
     getDepartamentoByCodigo = async (codigo) => {
         console.log('This is a function on the service');
-        console.log(codigo)
-        let response
+        let departamento
         const query=`SELECT * from ${departamentoTabla} WHERE codigo='${codigo}'`
         const { Pool } = pkg;
         const pool = new Pool(
@@ -123,10 +123,9 @@ export class DepartamentoService {
                     rejectUnauthorized: false
                 }
             })
-        response=await pool.query(query)//trae el departamento
+        departamento=await pool.query(query)//trae el departamento
         pool.end()
-        console.log(response.rows)
-        return response.rows;
+        return departamento.rows;
     }
 
     updateDepartamentoByCodigo = async (codigo, departamento) => {
@@ -158,7 +157,7 @@ export class DepartamentoService {
 
     getEdificio = async(id) => {
         console.log('This is a function on the service');
-        let response
+        let id_edificio
         const query = `SELECT id_edificio from ${departamentoTabla} WHERE codigo='${id}'`;
 
         const { Pool } = pkg;
@@ -169,10 +168,9 @@ export class DepartamentoService {
                     rejectUnauthorized: false
                 }
             })
-        response = await pool.query(query)//trae edificio by adminsistrador
+        id_edificio = await pool.query(query)//trae edificio by adminsistrador
         pool.end()
-        console.log(response.rows)
-        return response.rows;
+        return id_edificio.rows;
     }
     
 

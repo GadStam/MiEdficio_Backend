@@ -43,19 +43,23 @@ const departamentoService = new DepartamentoService();
 
 router.post('/:id', Authenticate, async (req, res) => { //create departamentos
     console.log(`This is a post operation`);
+    
     let deptos = []
     let codigos = []
+
     try{
         const departamento = await departamentoService.createDepartamento(req.params.id, req.body);
-        console.log(departamento.deptos.length)
-        codigos=departamento.codigos
-        const cant_departamentos=departamento.deptos.length
-        for(let i=0; i<cant_departamentos; i++){
-            deptos.push(departamento.deptos[i].departamento)
-            console.log(departamento.deptos[i].departamento)
+        if(departamento.deptos[0]===undefined){
+            return res.status(404).json("no se encontró edificio")
+        }else{
+            codigos=departamento.codigos
+            const cant_departamentos=departamento.deptos.length
+            
+            for(let i=0; i<cant_departamentos; i++){
+                deptos.push(departamento.deptos[i].departamento)
+            }
+            return res.status(201).json({deptos, codigos});
         }
-            console.log("hola", deptos, codigos)
-        return res.status(201).json({deptos, codigos});
     }catch(error){
         console.log(error)
         return res.status(500).json(error)
@@ -133,19 +137,21 @@ router.put('/:codigo', Authenticate, async (req, res) => { //update departamento
 }
 
 router.get('/:codigo', async (req,res) => {//get departamento by codigo
+    console.log(`this is a put operation`)
     try{
         const departamento = await departamentoService.getDepartamentoByCodigo(req.params.codigo)
+        
         if(departamento[0]===undefined){
             return res.status(404).json("No se encontro departamento")
         }
-        console.log("el id", departamento[0].id_departamento)
+        
         const id = departamento[0].id_departamento
         const depto = departamento[0].departamento
-        const edificio = departamento[0].id_edificio
+        const id_edificio = departamento[0].id_edificio
         const token = authService.getToken(id)
-        return res.status(200).json({ token, id, depto, edificio });
+        
+        return res.status(201).json({ token, id, depto, id_edificio });
     }catch(error){
-        console.log("el error", error)
         return res.status(500).json(error)
     }
 })
@@ -173,7 +179,6 @@ router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by
     console.log(`This is a get operation`);
     try{
         const edificio = await departamentoService.getEdificio(req.params.id);
-        console.log(edificio[0])
         if (edificio[0] === undefined) {
             return res.status(404).json("no se encontro edificio");
         } else {
