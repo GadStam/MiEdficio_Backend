@@ -74,7 +74,6 @@ router.post('', Authenticate, async(req, res) => { //create evento
         console.log(`This is a post operation`);
         try{
             const eventos = await eventoService.getEventosByEdificio(req.params.id);
-            console.log(eventos)
             if (eventos[0]===undefined){
                 return res.status(404).json("No se encontro edificio")
             }else{
@@ -127,7 +126,6 @@ router.post('', Authenticate, async(req, res) => { //create evento
             if(eventos==="no encontro"){
                 return res.status(404).json("no se encontro")
             }else{
-                console.log("entro")
                 return res.status(201).json(eventos)
             }
         }catch(error){

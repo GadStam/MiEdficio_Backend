@@ -130,7 +130,6 @@ export class DepartamentoService {
 
     updateDepartamentoByCodigo = async (codigo, departamento) => {
         console.log('This is a function on the service');
-        console.log(codigo)
 
         let response;
         const query=`UPDATE ${departamentoTabla} SET nombre = '${departamento.nombre}', apellido = '${departamento.apellido}', dni = '${departamento.dni}', telefono = '${departamento.telefono}' WHERE codigo = '${codigo}'`;
