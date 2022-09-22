@@ -39,7 +39,7 @@ export class AdministradorService {
 
     getAdministrador = async(administrador) => {
         console.log('This is a function on the service');
-        let response = 0
+        let id_administrador
         const query = `SELECT id_administrador from ${adminTabla} WHERE mail='${administrador.mail}' and contraseña='${administrador.contraseña}'`
 
 
@@ -53,15 +53,14 @@ export class AdministradorService {
             })
 
         
-        response = await pool.query(query)//trae el administrador
+        id_administrador = await pool.query(query)//trae el administrador
         pool.end()
-        console.log(response.rows)
-        return response.rows;
+        return id_administrador.rows;
     }
 
     getAdministradorById = async(id) => {
         console.log('This is a function on the service');
-        let response
+        let administrador
         const query = `SELECT * from ${adminTabla} WHERE id_administrador='${id}'`;
 
         const { Pool } = pkg;
@@ -74,15 +73,15 @@ export class AdministradorService {
                 }
             })
 
-        response = await pool.query(query)
+        administrador = await pool.query(query)
         pool.end()
-        return response.rows;
+        return administrador.rows;
         }
     
         getAdministradorByIdEdificio = async(id) => {
             console.log('This is a function on the service');
-            let response
-            let response2
+            let id_administrador
+            let administrador
             let id_adm
 
             const query = `SELECT id_administrador from ${edificioTabla} WHERE id_edificio=${id}`;
@@ -96,20 +95,20 @@ export class AdministradorService {
                     }
                 })
         
-            response = await pool.query(query)
-            if(response.rows[0]===undefined){
+                id_administrador = await pool.query(query)
+            if(id_administrador.rows[0]===undefined){
                 pool.end()
-                return response
+                return id_administrador
             }
 
-            id_adm=response.rows[0].id_administrador
+            id_adm=id_administrador.rows[0].id_administrador
 
             const query2= `SELECT * from ${adminTabla} WHERE ${id_adm}=id_administrador`;
             
-            response2 = await pool.query(query2)
+            administrador = await pool.query(query2)
             pool.end()
             
-            return response2.rows;
+            return administrador.rows;
             }
         
 
