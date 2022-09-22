@@ -7,11 +7,13 @@ const departamentoTabla = process.env.DB_TABLA_DEPARTAMENTO
 
 export class ExpensaService {
 
-    createExpensa = async(pdf) => {
+    createExpensa = async(id, expensa) => {
         console.log('This is a function on the service');
         let response
-        //let response2
-        //const query2= `SELECT id_departamento from ${departamentoTabla} WHERE codigo='${codigo}'`
+        let id_departamento
+        let id_expensa
+        const query2= `SELECT id_departamento from ${departamentoTabla} WHERE departamento='${expensa.depto}' and id_edificio='${id}'`
+        const query3= `SELECT MAX(id_expensa) as id_expensa from ${expensaTabla}`
         const { Pool } = pkg;
         const pool = new Pool(
             {
@@ -20,13 +22,15 @@ export class ExpensaService {
                     rejectUnauthorized: false
                 }
             })
-        //response2 = await pool.query(query2)
-        //console.log("what", response2.rows[0].id_departamento)
-        const query = `INSERT INTO ${expensaTabla} ( pdf_expensa) VALUES ('${pdf}') `;
+        id_departamento = await pool.query(query2)
+        console.log(id_departamento.rows)
+        const query = `INSERT INTO ${expensaTabla} (fecha, monto, id_departamento) VALUES ('${expensa.fecha}','${expensa.monto}',${id_departamento.rows[0].id_departamento} ) `;
+        console.log(query)
         response = await pool.query(query)//crea un espacio
+        id_expensa=await pool.query(query3)
         pool.end()
         
-        return response.rowCount;
+        return id_expensa.rows;
     }
 
     getExpensaByDepartamento = async(id) => {
@@ -43,15 +47,15 @@ export class ExpensaService {
                 }
             })
             response2 = await pool.query(query2)
-            const query=`SELECT * from ${expensaTabla} WHERE id_departamento=${response2.rows[0].id_departamento} ORDER BY fecha_vencimiento DESC`
+            const query=`SELECT * from ${expensaTabla} WHERE id_departamento=${response2.rows[0].id_departamento} ORDER BY fecha DESC`
 
             response=await pool.query(query)
             for(let i=0;i<response.rows.length;i++){
-                let year=response.rows[i].fecha_vencimiento.getFullYear()+""
-                let month=response.rows[i].fecha_vencimiento.getMonth()+""
-                let day=response.rows[i].fecha_vencimiento.getDate()+""
+                let year=response.rows[i].fecha.getFullYear()+""
+                let month=response.rows[i].fecha.getMonth()+""
+                let day=response.rows[i].fecha.getDate()+""
                 date=year+"-"+month+"-"+day
-                response.rows[i].fecha_vencimiento=date
+                response.rows[i].fecha=date
                 response.rows[i].id_expensa=parseInt(response.rows[i].id_expensa)
                 response.rows[i].id_departamento=parseInt(response.rows[i].id_departamento)
                 response.rows[i].monto=parseInt(response.rows[i].monto)               

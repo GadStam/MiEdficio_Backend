@@ -35,11 +35,11 @@ const expensaService = new ExpensaService()
  *       500:
  *         description: Some server error
  */
-router.post('/', Authenticate, async(req, res) => { //create expensa
+router.post('/:id', Authenticate, async(req, res) => { //create expensa
     console.log(`This is a post operation`);
     try{
-            const expensa = await expensaService.createExpensa(req.body.pdf_expensa);
-            return res.status(201).json(expensa);
+            const expensa = await expensaService.createExpensa(req.params.id ,req.body);
+            return res.status(201).json(expensa[0]);
         }
         catch (error) {
         console.log(error)
@@ -50,7 +50,7 @@ router.post('/', Authenticate, async(req, res) => { //create expensa
 
 /**
  * @swagger
- * /eventos/{codigo}}:
+ * /expensas/{codigo}}:
  *   get:
  *     summary: Trae expensas por codigo
  *     tags: [Expensa]
