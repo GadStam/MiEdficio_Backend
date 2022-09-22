@@ -45,11 +45,8 @@ const edificioService = new EdificioService();
 
 router.post('/:id', Authenticate, async(req, res) => { //create edificio by administrador
     console.log(`This is a post operation`);
-    console.log(req.body)
-    console.log("entraste?")
     try{
         const edificio = await edificioService.createEdificio(req.body, req.params.id);
-        console.log(edificio)
         if(edificio==="error"){
             return res.status(403).json("No se encontró administrador")
         }
@@ -90,9 +87,8 @@ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administ
     console.log(`This is a get operation`);
     try{
         const edificio = await edificioService.getEdificio(req.params.id);
-        console.log(edificio[0])
         if (edificio[0] === undefined) {
-            return res.status(404).json("no se encontraron edificios");
+            return res.status(404).json("no se encontró administrador");
         } else {
             return res.status(201).json(edificio);
         }
@@ -121,11 +117,10 @@ router.get('/:id', Authenticate, async(req, res) => { //get edificio by administ
  *       400:
  *         description: edificio can not be found
  */
-router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by id
     console.log(`This is a get operation`);
     try{
         const edificio = await edificioService.getEdificioById(req.params.id);
-        console.log(edificio[0])
         if (edificio[0] === undefined) {
             return res.status(404).json("no se encontro edificio");
         } else {
