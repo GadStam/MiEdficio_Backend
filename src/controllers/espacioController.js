@@ -67,12 +67,11 @@ router.get('/',  async(req, res) => {//trae espacios comunes
 router.post('', Authenticate, async(req, res) => { //create espacio comun
     console.log(`This is a post operation`);
     try{
-        console.log(req.body);
         const espacio = await espacioService.createEspacio(req.body);
         if(espacio===undefined){
             return res.status(404).json("ya existe ese espacio comun")
         }else{
-            return res.status(201).json(espacio);
+            return res.status(201).json(espacio[0]);
         }
     } catch (error) {
         console.log(error)
@@ -99,22 +98,18 @@ router.post('', Authenticate, async(req, res) => { //create espacio comun
  *       400:
  *         description: edificio can not be found
  */
-router.get('/edificio/:id', Authenticate, async(req, res) => { //get edificio by administrador
+router.get('/edificio/:id', Authenticate, async(req, res) => { //get espacio by edificio
     console.log(`This is a get operation`);
     let espacios=[]
     try{
         const edificio = await espacioService.getEspaciosById_Edificio(req.params.id);
-        console.log(edificio[0])
         if (edificio[0] === undefined) {
             return res.status(404).json("no se encontro edificio");
         } else {
             console.log(edificio)
             for(let i=0;i<edificio.length;i++){
-                console.log(edificio[i].id_espaciocc)
                 let response = await espacioService.getEspaciosById_EspacioCC(edificio[i].id_espaciocc);
-                console.log(response)
                 espacios.push(response)
-                console.log(espacios)
             }
             return res.status(201).json(espacios);
         }
