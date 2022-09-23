@@ -150,11 +150,14 @@ router.get('/:codigo', async (req,res) => {//get departamento by codigo
         const id_edificio = departamento[0].id_edificio
         const token = authService.getToken(id)
         
-        return res.status(201).json({ token, id, depto, id_edificio });
+        return res.status(200).json({ token, id, depto, id_edificio });
     }catch(error){
         return res.status(500).json(error)
     }
 })
+
+
+
 
 /**
  * @swagger
