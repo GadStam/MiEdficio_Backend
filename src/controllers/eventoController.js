@@ -119,7 +119,7 @@ router.post('', Authenticate, async(req, res) => { //create evento
         }
     });
 
-    router.delete('/:id',  Authenticate, async(req, res) => {//borra evento
+    router.delete('/:id',   async(req, res) => {//borra evento
         console.log(`This is a delete operation`);
         try{
             const eventos = await eventoService.deleteEventos(req.params.id);
