@@ -139,6 +139,7 @@ router.get('/:id', Authenticate, async(req, res) => { //get administrador by id
 });
 
 
+
 /**
  * @swagger
  * /administradores/edificio/{id_edificio}:

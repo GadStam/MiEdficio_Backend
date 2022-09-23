@@ -104,7 +104,7 @@ router.post('', Authenticate, async(req, res) => { //create evento
  *       400:
  *         description: departamento can not be found
  */
-    router.get('/departamento/:id', Authenticate, async(req, res) => {//trae eventos por edificio
+    router.get('/departamento/:id',  async(req, res) => {//trae eventos por edificio
         console.log(`This is a post operation`);
         try{
             const eventos = await eventoService.getEventosByDepartamento(req.params.id,);
