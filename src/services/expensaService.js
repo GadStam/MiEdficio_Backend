@@ -22,6 +22,12 @@ export class ExpensaService {
                     rejectUnauthorized: false
                 }
             })
+            console.log(query2)
+            response= await pool.query(query2)
+            console.log(response.rows)
+                if(response.rows[0]===undefined){
+                    return response.rows
+                }
         id_departamento = await pool.query(query2)
         console.log(id_departamento.rows)
         const query = `INSERT INTO ${expensaTabla} (fecha, monto, id_departamento) VALUES ('${expensa.fecha}','${expensa.monto}',${id_departamento.rows[0].id_departamento} ) `;

@@ -39,6 +39,9 @@ router.post('/:id', Authenticate, async(req, res) => { //create expensa
     console.log(`This is a post operation`);
     try{
             const expensa = await expensaService.createExpensa(req.params.id ,req.body);
+            if(expensa[0]===undefined){
+                return res.status(404).json("no existe el departamento")
+            }
             return res.status(201).json(expensa[0]);
         }
         catch (error) {
